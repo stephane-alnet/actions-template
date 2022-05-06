@@ -10,9 +10,6 @@ on:
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
   workflow_call:
     inputs:
       APP_NAME:
@@ -53,3 +50,4 @@ jobs:
         with:
           exec: helm upgrade ${{ inputs.APP_NAME }} ${{ inputs.CHART_PATH }} --install --create-namespace --namespace=${{ inputs.NAMESPACE }} -f=${{ inputs.CHART_PATH }}/${{ inputs.CLOUD_PROVIDER }}/values_${{ inputs.REGION }}.yaml
           kubeconfig: '${{ secrets.KUBECONFIG }}'
+`
