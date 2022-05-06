@@ -54,7 +54,7 @@ jobs:
       - name: Add dependencies
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm repo add '${{ inputs.CHART_URL }}'
+          exec: helm repo add ${{ inputs.CHART_URL }}
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
