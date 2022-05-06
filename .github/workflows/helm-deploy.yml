@@ -51,5 +51,5 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade ${{ env.APP_NAME }} ${{ env.CHART_PATH }} --install --create-namespace --namespace=${{ env.NAMESPACE }} -f=${{ env.CHART_PATH }}/${{ env.CLOUD_PROVIDER }}/values_${{ env.REGION }}.yaml
+          exec: helm upgrade ${{ inputs.APP_NAME }} ${{ inputs.CHART_PATH }} --install --create-namespace --namespace=${{ inputs.NAMESPACE }} -f=${{ inputs.CHART_PATH }}/${{ inputs.CLOUD_PROVIDER }}/values_${{ inputs.REGION }}.yaml
           kubeconfig: '${{ secrets.KUBECONFIG }}'
