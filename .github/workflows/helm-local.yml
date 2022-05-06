@@ -51,7 +51,7 @@ jobs:
       - name: Dependency update
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: cd ${{ inputs.CHART_PATH }} ; helm dependency update
+          exec: helm dependency update ./${{ inputs.CHART_PATH }}
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
