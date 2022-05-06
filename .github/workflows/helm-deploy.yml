@@ -14,25 +14,25 @@ on:
   workflow_dispatch:
 
   workflow_call:
-      inputs:
-        APP_NAME:
-          required: true
-          type: string
-        CHART_PATH:
-          required: true
-          type: string
-        NAMESPACE:
-          required: true
-          type: string
-        CLOUD_PROVIDER:
-          required: true
-          type: string
-        REGION:
-          required: true
-          type: string
-      secrets:
-        KUBECONFIG:
-          required: true
+    inputs:
+      APP_NAME:
+        required: true
+        type: string
+      CHART_PATH:
+        required: true
+        type: string
+      NAMESPACE:
+        required: true
+        type: string
+      CLOUD_PROVIDER:
+        required: true
+        type: string
+      REGION:
+        required: true
+        type: string
+    secrets:
+      KUBECONFIG:
+        required: true
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "deploy"
