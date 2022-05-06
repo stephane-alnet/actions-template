@@ -48,12 +48,12 @@ jobs:
         uses: azure/setup-helm@v1
         with:
           version: v3.8.1
-      - name: Add dependency
+      - name: Add dependencies
         uses: WyriHaximus/github-action-helm3@v2
         with:
           exec: helm repo add jetstack https://charts.jetstack.io
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade '${{ inputs.APP_NAME }}' ${{ inputs.CHART_PATH }} --install --create-namespace --namespace=${{ inputs.NAMESPACE }} -f=${{ inputs.APP_NAME }}/${{ inputs.CLOUD_PROVIDER }}/values_${{ inputs.REGION }}_${{ inputs.CLUSTER_NAME }}.yaml
+          exec: helm upgrade '${{ inputs.APP_NAME }}' ${{ inputs.CHART_PATH }} --install --create-namespace --namespace=${{ inputs.NAMESPACE }} -f=${{ inputs.APP_NAME }}/${{ inputs.CLOUD_PROVIDER }}/values/values_${{ inputs.REGION }}_${{ inputs.CLUSTER_NAME }}.yaml
           kubeconfig: '${{ secrets.KUBECONFIG }}'
