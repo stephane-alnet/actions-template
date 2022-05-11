@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Helm local chart
+
+# Controls when the workflow will run
+on:
+
+  workflow_call:
+    inputs:
+      PATH:
+        required: true
+        type: string
+    secrets:
+      KUBECONFIG:
+        required: true
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "deploy"
+  deploy:
+    name: deploy to cluster
+    runs-on: [ self-hosted ]
+    steps:
+    - uses: actions/checkout@master
+    - name: deploy to cluster
+      uses: ghostzero/kubectl@v1
+      env:
+        KUBE_CONFIG_DATA: '${{ secrets.KUBECOFIG }}'
+      with:
+        args: apply -f {{ inputs.PATH }}
