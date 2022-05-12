@@ -15,4 +15,4 @@ runs:
       uses: steebchen/kubectl@v2.0.0
       with:
         command: apply -f ${{ inputs.STATICS_PATH }}
-        config: ${{ env.KUBECONFIG }}
+        config: ${{ secrets.KUBECONFIG_STAGING_DO_NYC1_COCRE_SUP }} 
