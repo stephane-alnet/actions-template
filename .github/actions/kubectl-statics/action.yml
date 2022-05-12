@@ -8,7 +8,7 @@ env:
   KUBECONFIG:
     required: false
 runs:
-  using: "composite"
+  # using: "composite"
   steps:
     - uses: actions/checkout@master
     - name: deploy to cluster
