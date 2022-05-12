@@ -9,9 +9,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@master
-    - name: deploy to cluster
-      uses: steebchen/kubectl@v2.0.0
+    - uses: steebchen/kubectl@v2.0.0
       with:
         command: apply -f ${{ inputs.statics_path }}
         config: '${{ inputs.kubeconfig }}'
