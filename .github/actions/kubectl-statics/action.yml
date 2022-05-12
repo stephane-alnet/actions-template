@@ -4,12 +4,12 @@ inputs:
   statics_path:
     required: true
     type: string
-  kubeconfig:
-    required: true
+  # kubeconfig:
+    # required: true
 runs:
   using: "composite"
   steps:
     - uses: steebchen/kubectl@v2.0.0
       with:
         command: apply -f ${{ inputs.statics_path }}
-        config: '${{ inputs.kubeconfig }}'
+        config: '${{ secrets.KUBECONFIG_STAGING_DO_NYC1_COCRE_SUP }}'

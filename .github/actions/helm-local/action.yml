@@ -1,0 +1,37 @@
+name: Kubectl statics deploy
+
+
+inputs:
+  APP_NAME:
+    required: true
+    type: string
+  CHART_PATH:
+    required: true
+    type: string
+  NAMESPACE:
+    required: true
+    type: string
+  CLOUD_PROVIDER:
+    required: true
+    type: string
+  REGION:
+    required: true
+    type: string
+  CLUSTER_NAME:
+    required: true
+    type: string
+  KUBECONFIG:
+    required: true
+        
+runs:
+  using: "composite"
+  steps:
+    - name: Install Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: v3.8.1
+    - name: Deploy
+      uses: WyriHaximus/github-action-helm3@v2
+      with:
+        exec: helm upgrade '${{ inputs.APP_NAME }}' ${{ inputs.CHART_PATH }} --install --create-namespace --namespace=${{ inputs.NAMESPACE }} -f=${{ inputs.CHART_PATH }}/values/${{ inputs.CLOUD_PROVIDER }}/values_${{ inputs.REGION }}_${{ inputs.CLUSTER_NAME }}.yaml
+        kubeconfig: '${{ inputs.KUBECONFIG }}'
