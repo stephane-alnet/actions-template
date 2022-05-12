@@ -14,5 +14,5 @@ runs:
     - name: deploy to cluster
       uses: danielr1996/kubectl-action@1.0.0
       with:
-        args: apply -f ${{ inputs.STATICS_PATH }}
-        kubeconfig: '${{ env.KUBECONFIG }}'
+        command: apply -f ${{ inputs.STATICS_PATH }}
+        config: ${{ env.KUBECONFIG }}
