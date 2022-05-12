@@ -1,21 +1,17 @@
 name: Kubectl statics deploy
 
 inputs:
-  STATICS_PATH:
+  statics_path:
     required: true
     type: string
-  SECRET_KUBECONFIG:
+  kubeconfig:
     required: true
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@master
-    - run: echo '${{ inputs.SECRET_KUBECONFIG }}'
-      shell: bash
-    - run: echo '${{ inputs.SECRET_KUBECONFIG }}' | base64 --decode
-      shell: bash
     - name: deploy to cluster
       uses: steebchen/kubectl@v2.0.0
       with:
-        command: apply -f ${{ inputs.STATICS_PATH }}
-        config: '${{ inputs.SECRET_KUBECONFIG }}'
+        command: apply -f ${{ inputs.statics_path }}
+        config: '${{ inputs.kubeconfig }}'
