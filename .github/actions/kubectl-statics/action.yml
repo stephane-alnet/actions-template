@@ -10,6 +10,10 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@master
+    - run: echo '${{ inputs.SECRET_KUBECONFIG }}'
+      shell: bash
+    - run: echo '${{ inputs.SECRET_KUBECONFIG }}' | base64 --decode
+      shell: bash
     - name: deploy to cluster
       uses: steebchen/kubectl@v2.0.0
       with:
