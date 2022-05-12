@@ -1,9 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Kubectl statics deploy
-
-# Controls when the workflow will run
-on:
 
 inputs:
   STATICS_PATH:
@@ -11,13 +6,9 @@ inputs:
     type: string
   KUBECONFIG:
     required: true
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "deploy"
-  deploy:
-    name: deploy to cluster
-    runs-on: [ self-hosted ]
-    steps:
+runs:
+  using: "composite"
+  steps:
     - uses: actions/checkout@master
     - name: deploy to cluster
       uses: ghostzero/kubectl@v1
