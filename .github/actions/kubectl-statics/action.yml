@@ -7,7 +7,7 @@ on:
 
   workflow_call:
     inputs:
-      PATH:
+      STATICS_PATH:
         required: true
         type: string
     secrets:
@@ -26,4 +26,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: '${{ secrets.KUBECOFIG }}'
       with:
-        args: apply -f {{ inputs.PATH }}
+        args: apply -f ${{ inputs.STATICS_PATH }}
