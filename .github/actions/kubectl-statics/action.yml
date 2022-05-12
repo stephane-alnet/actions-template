@@ -5,14 +5,13 @@ name: Kubectl statics deploy
 # Controls when the workflow will run
 on:
 
-  workflow_call:
-    inputs:
-      STATICS_PATH:
-        required: true
-        type: string
-    secrets:
-      KUBECONFIG:
-        required: true
+inputs:
+  STATICS_PATH:
+    required: true
+    type: string
+inputs:
+  KUBECONFIG:
+    required: true
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "deploy"
@@ -24,6 +23,6 @@ jobs:
     - name: deploy to cluster
       uses: ghostzero/kubectl@v1
       env:
-        KUBE_CONFIG_DATA: '${{ secrets.KUBECOFIG }}'
+        KUBE_CONFIG_DATA: '${{ inputs.KUBECOFIG }}'
       with:
         args: apply -f ${{ inputs.STATICS_PATH }}
