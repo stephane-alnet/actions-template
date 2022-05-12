@@ -4,6 +4,7 @@ inputs:
   STATICS_PATH:
     required: true
     type: string
+env:    
   KUBECONFIG:
     required: true
 runs:
@@ -13,6 +14,6 @@ runs:
     - name: deploy to cluster
       uses: ghostzero/kubectl@v1
       env:
-        KUBE_CONFIG_DATA: '${{ inputs.KUBECONFIG }}'
+        KUBE_CONFIG_DATA: '${{ env.KUBECONFIG }}'
       with:
         args: apply -f ${{ inputs.STATICS_PATH }}
