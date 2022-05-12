@@ -13,6 +13,6 @@ runs:
     - name: deploy to cluster
       uses: ghostzero/kubectl@v1
       env:
-        KUBE_CONFIG_DATA: '${{ inputs.KUBECOFIG }}'
+        KUBE_CONFIG_DATA: '${{ inputs.KUBECONFIG }}'
       with:
         args: apply -f ${{ inputs.STATICS_PATH }}
