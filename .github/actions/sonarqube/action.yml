@@ -1,0 +1,26 @@
+name: SonarQube code analysys
+
+# inputs:
+#   SONAR_TOKEN:
+#     required: true
+#     type: string
+#   SONAR_HOST_URL:
+#     required: true
+#     type: string
+#   SONAR_HOST_URL:
+#     required: true
+#     type: string
+runs:
+  using: "composite"
+  steps:
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+    - name: SonarQube Quality Gate check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ env.SONAR_TOKEN }}

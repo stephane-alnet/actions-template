@@ -1,0 +1,11 @@
+name: Clone support files
+
+runs:
+  using: "composite"
+  steps:
+    - name: Clone supercharge docs repository
+      uses: actions/checkout@master
+      with:
+        repository: signalwire/devops-ci-config
+        # path: resources/docs/2.x
+        ref: master
