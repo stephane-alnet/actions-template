@@ -47,10 +47,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: Dependency build
+      - name: Dependency update
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm dependency build ./${{ inputs.CHART_PATH }}
+          exec: helm dependency update ./${{ inputs.CHART_PATH }} --skip-refresh 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
