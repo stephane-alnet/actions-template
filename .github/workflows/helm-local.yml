@@ -47,10 +47,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: Install Helm
-        uses: azure/setup-helm@v1
+      - name: repo update
+        uses: WyriHaximus/github-action-helm3@v2
         with:
-          version: v3.8.1
+          exec: helm repo update
       - name: Dependency update
         uses: WyriHaximus/github-action-helm3@v2
         with:
