@@ -12,7 +12,7 @@ on:
 
   workflow_call:
     inputs:
-      PROJECT__NAME:
+      PROJECT_NAME:
         required: true
         type: string
     secrets:
