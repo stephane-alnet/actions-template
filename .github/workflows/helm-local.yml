@@ -48,8 +48,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: azure/setup-helm@v1
       - uses: actions/checkout@v3
+      - name: helm version
+        run: helm version
+        shell: bash
       - name: Dependency update
-        run: helm dependency update ./${{ inputs.CHART_PATH }} --skip-refresh 
+        run: helm dependency update ./${{ inputs.CHART_PATH }}
         shell: bash
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
