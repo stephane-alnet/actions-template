@@ -38,4 +38,4 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: signalwire/${{ inputs.PROJECT_NAME }}:${{GITHUB_SHA::6}}
+        tags: signalwire/${{ inputs.PROJECT_NAME }}:${{github.github_sha::6}}
