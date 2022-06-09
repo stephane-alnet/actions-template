@@ -15,6 +15,10 @@ on:
       PROJECT_NAME:
         required: true
         type: string
+      PR_MESSAGE:
+        required: false
+        type: boolean
+        default: true
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -72,7 +76,7 @@ jobs:
 
     - name: Update Pull Request
       uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request' && $PR_MESSAGE == true
       env:
         LOGPRINT: "${{ steps.test.outputs.container-logs }}"
       with:
