@@ -39,7 +39,6 @@ jobs:
         # generate Docker tags based on the following events/attributes
         tags: |
           type=schedule
-          type=ref,event=branch
           type=ref,event=pr
           type=semver,pattern={{version}}
           type=semver,pattern={{major}}.{{minor}}
@@ -59,7 +58,7 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
 
     - name: Test
-      # if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request'
       id: test
       run: |
         docker run -d --rm --name test ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
