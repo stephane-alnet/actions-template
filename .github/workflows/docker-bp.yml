@@ -62,7 +62,10 @@ jobs:
       if: github.event_name == 'pull_request'
       id: test
       run: |
-        echo "::set-output name=container-logs::$(docker run --rm ${{ steps.meta.outputs.tags }})"
+        docker run -d --rm --name test ${{ steps.meta.outputs.tags }}
+        sleep 20
+        docker logs test
+        echo "::set-output name=container-logs::$(docker logs test)"
 
     - name: Update Pull Request
       uses: actions/github-script@v6
