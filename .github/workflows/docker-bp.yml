@@ -76,7 +76,7 @@ jobs:
 
     - name: Update Pull Request
       uses: actions/github-script@v6
-      if: github.event_name == 'pull_request' && ${{ github.event.inputs.PR_MESSAGE }} == true
+      if: github.event_name == 'pull_request' && ${{ github.event.inputs.PR_MESSAGE }} == 'true'
       env:
         LOGPRINT: "${{ steps.test.outputs.container-logs }}"
       with:
