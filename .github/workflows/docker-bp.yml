@@ -74,11 +74,11 @@ jobs:
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       env:
-        LOGPRINT: "container logs\n${{ steps.test.outputs.container-logs }}"
+        LOGPRINT: "${{ steps.test.outputs.container-logs }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Container logs listed bellow 📝\`
+          const output = `#### Container logs are listed bellow 📝\`
 
           <details><summary>Show Logs</summary>
 
