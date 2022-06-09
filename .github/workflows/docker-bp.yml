@@ -38,6 +38,12 @@ jobs:
           signalwire/${{ inputs.PROJECT_NAME }}
         # generate Docker tags based on the following events/attributes
         tags: |
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
           type=sha
 
     - name: Login to DockerHub
@@ -53,13 +59,17 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
 
     - name: Test
-      if: github.event_name == 'pull_request'
+      # if: github.event_name == 'pull_request'
       id: test
       run: |
-        docker run -d --rm --name test ${{ steps.meta.outputs.tags }}
+        docker run -d --rm --name test ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
         sleep 20
-        docker logs test
-        echo "::set-output name=container-logs::$(docker logs test)"
+        docker logs test > logs.txt
+        EXECUTIONLOG=$(cat logs.txt)
+        EXECUTIONLOG="${EXECUTIONLOG//'%'/'%25'}"
+        EXECUTIONLOG="${EXECUTIONLOG//$'\n'/'%0A'}"
+        EXECUTIONLOG="${EXECUTIONLOG//$'\r'/'%0D'}"
+        echo "::set-output name=container-logs::$EXECUTIONLOG"
 
     - name: Update Pull Request
       uses: actions/github-script@v6
