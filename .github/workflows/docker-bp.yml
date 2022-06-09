@@ -18,7 +18,7 @@ on:
       PR_MESSAGE:
         required: false
         type: boolean
-        default: true
+        default: false
     secrets:
       DOCKERHUB_USERNAME:
         required: true
