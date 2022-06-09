@@ -70,6 +70,7 @@ jobs:
         EXECUTIONLOG="${EXECUTIONLOG//$'\n'/'%0A'}"
         EXECUTIONLOG="${EXECUTIONLOG//$'\r'/'%0D'}"
         echo "::set-output name=container-logs::$EXECUTIONLOG"
+        echo $EXECUTIONLOG
 
     - name: Update Pull Request
       uses: actions/github-script@v6
