@@ -128,7 +128,7 @@ jobs:
     name: "Deploy to Swarm cluster"
     needs: [ "buildpush" ]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.event.inputs.SWARM_DEPLOY == true
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Deploy to Swarm
         run: |
