@@ -55,11 +55,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and export to Docker
-      uses: docker/build-push-action@v3
-      with:
-        load: true
-        tags: ${{ steps.meta.outputs.tags }}
+    # - name: Build and export to Docker
+    #   uses: docker/build-push-action@v3
+    #   with:
+    #     load: true
+    #     tags: ${{ steps.meta.outputs.tags }}
 
     - name: Test
       if: github.event_name == 'pull_request'
