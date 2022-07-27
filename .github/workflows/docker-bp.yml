@@ -109,6 +109,6 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
     - name: Export tags
       run: |
-        echo "::set-output name=tags::${{ steps.meta.outputs.tags }}"
+        echo "TAGS=${{ steps.meta.outputs.tags }}" >> $GITHUB_ENV
     outputs: 
       tag: ${{ steps.meta.outputs.tags }}
