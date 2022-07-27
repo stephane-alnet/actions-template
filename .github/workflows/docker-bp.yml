@@ -69,11 +69,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    # - name: Build and export to Docker
-    #   uses: docker/build-push-action@v3
-    #   with:
-    #     load: true
-    #     tags: ${{ steps.meta.outputs.tags }}
+    - name: Build and export to Docker
+      uses: docker/build-push-action@v3
+      with:
+        load: true
+        tags: ${{ steps.meta.outputs.tags }}
 
     - name: Test
       if: github.event_name == 'pull_request'
@@ -128,7 +128,7 @@ jobs:
     name: "Deploy to Swarm cluster"
     needs: [ "buildpush" ]
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.event.inputs.SWARM_DEPLOY == true
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.event.inputs.SWARM_DEPLOY == true
     steps:
       - name: Deploy to Swarm
         run: |
@@ -138,11 +138,10 @@ jobs:
           # Pull service version from spec (required for update)
           version=$(jq '.Version.Index' service.spec.json)
 
-          cat ${{needs.buildpush.outputs.imagetag}}
           # Create request body for service update; Set image tag to tag of newly built image
-          # jq '.Spec.TaskTemplate.ContainerSpec.Image="signalwire/signalwire-docs:<newtag>" | .Spec' service.spec.json > update.spec.json
+          jq '.Spec.TaskTemplate.ContainerSpec.Image="${{needs.buildpush.outputs.imagetag}}" | .Spec' service.spec.json > update.spec.json
           # Update the service
-          # curl -s -X POST -H "X-API-Key: ${{env.PORTAINER_API_KEY}}" https://deploy.signalwire.cloud/api/endpoints/${{secrets.ENDPOINTID}}/docker/services/signalwire-docs_docs/update?version=$version -d @update.spec.json
+          curl -s -X POST -H "X-API-Key: ${{env.PORTAINER_API_KEY}}" https://deploy.signalwire.cloud/api/endpoints/${{secrets.ENDPOINTID}}/docker/services/signalwire-docs_docs/update?version=$version -d @update.spec.json
         env:
           PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
           endpointID: ${{ secrets.DOCS_ENDPOINT_ID }}
