@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Docker build & Push
+name: Docker build/Push & deploy
 
 # Controls when the workflow will run
 on:
@@ -19,11 +19,20 @@ on:
         required: false
         type: boolean
         default: false
+      SWARM_DEPLOY:
+        required: true
+        type: boolean
+        default: false
     secrets:
       DOCKERHUB_USERNAME:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      ENDPOINTID:
+        required: false
+      PORTAINER_API_KEY:
+        required: false
+      
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "deploy"
@@ -31,6 +40,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: [ ubuntu-latest]
 
+    outputs:
+      imagetag: ${{ steps.meta.outputs.tags }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Docker meta
@@ -102,15 +113,33 @@ jobs:
           })
 
     - name: Build and push
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       uses: docker/build-push-action@v3
       with:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-    - name: Export tags
-      run: |
-        echo "TAGS=${{ steps.meta.outputs.tags }}" >> $GITHUB_ENV
-    outputs: 
-      tag: ${{ steps.meta.outputs.tags }}
+      
+  swarmdeploy:
+    name: "Deploy to Swarm cluster"
+    needs: [ "buildpush" ]
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.event.inputs.SWARM_DEPLOY == true
+    steps:
+      - name: Deploy to Swarm
+        run: |
+          # Retrieve service spec
+          curl -s -H "X-API-Key: ${{env.PORTAINER_API_KEY}}" https://deploy.signalwire.cloud/api/endpoints/${{secrets.ENDPOINTID}}/docker/services/signalwire-docs_docs > service.spec.json
+
+          # Pull service version from spec (required for update)
+          version=$(jq '.Version.Index' service.spec.json)
+
+          cat ${{needs.buildpush.outputs.imagetag}}
+          # Create request body for service update; Set image tag to tag of newly built image
+          # jq '.Spec.TaskTemplate.ContainerSpec.Image="signalwire/signalwire-docs:<newtag>" | .Spec' service.spec.json > update.spec.json
+          # Update the service
+          # curl -s -X POST -H "X-API-Key: ${{env.PORTAINER_API_KEY}}" https://deploy.signalwire.cloud/api/endpoints/${{secrets.ENDPOINTID}}/docker/services/signalwire-docs_docs/update?version=$version -d @update.spec.json
+        env:
+          PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
+          endpointID: ${{ secrets.DOCS_ENDPOINT_ID }}
