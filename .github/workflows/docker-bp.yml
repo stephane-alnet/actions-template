@@ -107,5 +107,8 @@ jobs:
       with:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
+    - name: Export tags
+      run: |
+        echo "::set-output name=tags::${{ steps.meta.outputs.tags }}"
     outputs: 
       tag: ${{ steps.meta.outputs.tags }}
