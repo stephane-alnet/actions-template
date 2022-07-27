@@ -44,6 +44,9 @@ jobs:
       imagetag: ${{ steps.meta.outputs.tags }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Configure buildx
+      run: export DOCKER_CLI_EXPERIMENTAL=enabled
+
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v4
