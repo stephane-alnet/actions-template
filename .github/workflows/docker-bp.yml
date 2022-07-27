@@ -144,4 +144,4 @@ jobs:
           curl -s -X POST -H "X-API-Key: ${{env.PORTAINER_API_KEY}}" https://deploy.signalwire.cloud/api/endpoints/${{secrets.ENDPOINTID}}/docker/services/signalwire-docs_docs/update?version=$version -d @update.spec.json
         env:
           PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
-          endpointID: ${{ secrets.DOCS_ENDPOINT_ID }}
+          ENDPOINTID: ${{ secrets.ENDPOINTID }}
