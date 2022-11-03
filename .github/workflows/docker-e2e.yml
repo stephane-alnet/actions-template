@@ -53,7 +53,7 @@ jobs:
     - run: ls -l
       shell: bash
 
-    - uses: signalwire/actions-template/.github/workflows/actions/docker
+    - uses: signalwire/actions-template/.github/workflows/actions/docker@dev
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       # secrets:
