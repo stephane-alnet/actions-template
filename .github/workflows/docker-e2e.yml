@@ -44,14 +44,14 @@ jobs:
       imagetag: ${{ steps.meta.outputs.tags }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Checkout actions
-      uses: actions/checkout@v3
-      with:
-        repository: signalwire/actions-template
-        ref: dev
+    # - name: Checkout actions
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: signalwire/actions-template
+    #     ref: dev
 
-    - run: ls -l
-      shell: bash
+    # - run: ls -l
+    #   shell: bash
 
     - uses: signalwire/actions-template/.github/workflows/actions/docker@dev
       with:
