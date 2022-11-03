@@ -110,7 +110,7 @@ jobs:
         env:
           PLANPRINT: "terraform\n${{ steps.read.outputs.content }}"
         with:
-          github-token: ${{ inputs.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
