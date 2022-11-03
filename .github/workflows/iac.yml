@@ -21,6 +21,9 @@ on:
         required: true
         type: string
         default: "us-east-2"
+      APPROVERS:
+        required: false
+        type: string
     secrets:
       PRIVATE_SSH_KEY_TFMODULES:
         required: true
@@ -133,7 +136,21 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-            
+      
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.GH_APPROVAL_APP_ID }}
+          private_key: ${{ secrets.GH_APPROVAL_APP_PKEY }}
+
+      - name: Wait for approval
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ steps.generate_token.outputs.token }}
+          approvers: ${{ inputs.APPROVERS }}
+          minimum-approvals: 1
+
       - name: Terragrunt apply-all
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terragrunt apply-all --terragrunt-non-interactive
