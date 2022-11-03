@@ -37,6 +37,10 @@ on:
         required: false
       GCP_WIP:
         required: false
+      GH_APPROVAL_APP_ID:
+        required: false
+      GH_APPROVAL_APP_PKEY:
+        required: false
 
 jobs:
   terragrunt:
