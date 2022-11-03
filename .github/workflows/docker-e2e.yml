@@ -50,7 +50,7 @@ jobs:
         repository: signalwire/actions-template
 
 
-    - uses: ./workflows/actions/docker
+    - uses: ./.github/workflows/actions/docker
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       # secrets:
