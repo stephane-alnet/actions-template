@@ -59,7 +59,7 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUSH: ${{ env.PUSH }}
+        PUSH: ${{ secrets.PUSH }}
         
   #   - name: Configure buildx
   #     run: export DOCKER_CLI_EXPERIMENTAL=enabled
