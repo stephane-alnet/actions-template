@@ -10,24 +10,6 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      PRIVATE_SSH_KEY_TFMODULES:
-        required: true
-        type: string
-      AWS_ACCESS_KEY_ID:
-        required: true
-        type: string
-      AWS_ACCESS_KEY_SECRET:
-        required: true
-        type: string
-      TF_VAR_DO_TOKEN:
-        required: false
-        type: string
-      GCP_SA:
-        required: false
-        type: string
-      GCP_WIP:
-        required: false
-        type: string
       WORKING-DIRECTORY:
         required: true
         type: string
@@ -39,6 +21,19 @@ on:
         required: true
         type: string
         default: "us-east-2"
+    secrets:
+      PRIVATE_SSH_KEY_TFMODULES:
+        required: true
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_ACCESS_KEY_SECRET:
+        required: true
+      TF_VAR_DO_TOKEN:
+        required: false
+      GCP_SA:
+        required: false
+      GCP_WIP:
+        required: false
 
 jobs:
   terragrunt:
