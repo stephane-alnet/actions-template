@@ -1,0 +1,147 @@
+name: 'Terragrunt GitHub Actions'
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+      PRIVATE_SSH_KEY_TFMODULES:
+        required: true
+        type: string
+      AWS_ACCESS_KEY_ID:
+        required: true
+        type: string
+      AWS_ACCESS_KEY_SECRET:
+        required: true
+        type: string
+      TF_VAR_DO_TOKEN:
+        required: false
+        type: string
+      GCP_SA:
+        required: false
+        type: string
+      GCP_WIP:
+        required: false
+        type: string
+      WORKING-DIRECTORY:
+        required: true
+        type: string
+      tg_version: 
+        required: false
+        type: string
+        default: '0.36.8'
+      AWS_REGION: 
+        required: true
+        type: string
+        default: "us-east-2"
+
+jobs:
+  terragrunt:
+    name: 'Terragrunt ${{ inputs.WORKING_DIR}}'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.ENVIRONMENT }}
+    
+    permissions: write-all
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ inputs.PRIVATE_SSH_KEY_TFMODULES }}
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ inputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ inputs.AWS_ACCESS_KEY_SECRET }}
+          aws-region: ${{ inputs.AWS_REGION }}
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0.4.0'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ inputs.GCP_WIP }} # 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: ${{ inputs.GCP_SA }}
+      
+
+      - name: run terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: ${{ inputs.tg_version }}
+
+      - name: Terragrunt init
+        id: init
+        working-directory: ${{ inputs.WORKING_DIR }}
+        run: terragrunt run-all init
+      
+      - name: Terragrunt validate
+        id: validate
+        run: terragrunt run-all validate
+        working-directory: ${{ inputs.WORKING_DIR }}
+
+      - name: Terragrunt fmt
+        id: fmt
+        run: terragrunt run-all hclfmt
+
+      - name: Terragrunt plan
+        id: plan
+        run: terragrunt run-all plan -no-color > plan.txt
+        working-directory: ${{ inputs.WORKING_DIR }}
+        env:
+          TF_VAR_do_token: ${{ inputs.TF_VAR_DO_TOKEN }}
+      
+      - name: Load plan file
+        id: read
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ${{ inputs.WORKING_DIR }}/plan.txt
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Update Pull Request
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLANPRINT: "terraform\n${{ steps.read.outputs.content }}"
+        with:
+          github-token: ${{ inputs.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLANPRINT}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+            
+      - name: Terragrunt apply-all
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terragrunt apply-all --terragrunt-non-interactive
+        working-directory: ${{ inputs.WORKING_DIR }}
+        env:
+          TF_VAR_do_token: ${{ inputs.TF_VAR_DO_TOKEN }}
