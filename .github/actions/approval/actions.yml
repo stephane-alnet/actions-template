@@ -1,0 +1,24 @@
+name: Approval Gate
+description: Request an approval from some group lead
+
+inputs:
+  APPROVERS:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ env.GH_APPROVAL_APP_ID }}
+          private_key: ${{ env.GH_APPROVAL_APP_PKEY }}
+
+      - name: Wait for approval
+        uses: trstringer/manual-approval@v1
+        timeout-minutes: 60
+        with:
+          secret: ${{ steps.generate_token.outputs.token }}
+          approvers: ${{ inputs.APPROVERS }}
+          minimum-approvals: 1
