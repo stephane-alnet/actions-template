@@ -38,12 +38,13 @@ jobs:
   # This workflow contains a single job called "deploy"
   buildpush:
     # The type of runner that the job will run on
-    runs-on: [ ubuntu-latest]
-
-    outputs:
-      imagetag: ${{ steps.meta.outputs.tags }}
+    name: docker build
+    uses: signalwire/actions-template/.github/workflows/actions/docker@dev
+    with:
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+      # secrets:
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    # steps:
     # - name: Checkout actions
     #   uses: actions/checkout@v3
     #   with:
@@ -53,10 +54,6 @@ jobs:
     # - run: ls -l
     #   shell: bash
 
-    - uses: signalwire/actions-template/.github/workflows/actions/docker@dev
-      with:
-        PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
-      # secrets:
       #   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       #   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         
