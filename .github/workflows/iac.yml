@@ -10,7 +10,7 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      WORKING-DIRECTORY:
+      WORKING_DIR:
         required: true
         type: string
       tg_version: 
