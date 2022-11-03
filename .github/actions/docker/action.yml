@@ -90,7 +90,7 @@ runs:
           })
 
     - name: Build and push
-      if: ${{ env.PUSH }} == "yes"
+      if: ${{ inputs.PUSH }} == "yes"
       uses: docker/build-push-action@v3
       with:
         push: true
