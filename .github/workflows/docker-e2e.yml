@@ -15,6 +15,9 @@ on:
       PROJECT_NAME:
         required: true
         type: string
+      PUSH:
+        required: false
+        type: string
       # PR_MESSAGE:
       #   required: false
       #   type: boolean
@@ -31,8 +34,6 @@ on:
       ENDPOINTID:
         required: false
       PORTAINER_API_KEY:
-        required: false
-      PUSH:
         required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -57,11 +58,11 @@ jobs:
       name: Docker build & push
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+        PUSH: ${{ inputs.PUSH }}
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUSH: ${{ secrets.PUSH }}
         
   #   - name: Configure buildx
   #     run: export DOCKER_CLI_EXPERIMENTAL=enabled

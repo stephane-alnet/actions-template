@@ -4,6 +4,9 @@ description: Buld and push image to SignalWire registry
 inputs:
   PROJECT_NAME:
     required: true
+  PUSH:
+    required: false
+    default: "no"
 
 runs:
   using: "composite"
@@ -87,7 +90,7 @@ runs:
           })
 
     - name: Build and push
-      if: ${{ env.PUSH }}
+      if: ${{ env.PUSH }} == "yes"
       uses: docker/build-push-action@v3
       with:
         push: true
