@@ -50,6 +50,8 @@ jobs:
         repository: signalwire/actions-template
         ref: dev
 
+    - run: ls -l
+      shell: bash
 
     - uses: ./.github/workflows/actions/docker
       with:
