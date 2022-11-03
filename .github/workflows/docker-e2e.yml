@@ -53,7 +53,7 @@ jobs:
     - run: tree .github
       shell: bash
 
-    - uses: ./.github/actions/docker@dev
+    - uses: ./.github/actions/docker
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       # secrets:
