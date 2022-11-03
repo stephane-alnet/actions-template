@@ -39,7 +39,7 @@ jobs:
   buildpush:
     # The type of runner that the job will run on
     name: docker build
-    uses: signalwire/actions-template/.github/workflows/actions/docker@dev
+    uses: signalwire/actions-template/.github/actions/docker@dev
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       # secrets:
