@@ -50,13 +50,13 @@ jobs:
 
       - uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ inputs.PRIVATE_SSH_KEY_TFMODULES }}
+          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY_TFMODULES }}
       
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ inputs.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ inputs.AWS_ACCESS_KEY_SECRET }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY_SECRET }}
           aws-region: ${{ inputs.AWS_REGION }}
 
       - id: 'auth'
@@ -64,8 +64,8 @@ jobs:
         uses: 'google-github-actions/auth@v0.4.0'
         with:
           token_format: 'access_token'
-          workload_identity_provider: ${{ inputs.GCP_WIP }} # 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-          service_account: ${{ inputs.GCP_SA }}
+          workload_identity_provider: ${{ secrets.GCP_WIP }} # 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: ${{ secrets.GCP_SA }}
       
 
       - name: run terragrunt
@@ -92,7 +92,7 @@ jobs:
         run: terragrunt run-all plan -no-color > plan.txt
         working-directory: ${{ inputs.WORKING_DIR }}
         env:
-          TF_VAR_do_token: ${{ inputs.TF_VAR_DO_TOKEN }}
+          TF_VAR_do_token: ${{ secrets.TF_VAR_DO_TOKEN }}
       
       - name: Load plan file
         id: read
@@ -139,4 +139,4 @@ jobs:
         run: terragrunt apply-all --terragrunt-non-interactive
         working-directory: ${{ inputs.WORKING_DIR }}
         env:
-          TF_VAR_do_token: ${{ inputs.TF_VAR_DO_TOKEN }}
+          TF_VAR_do_token: ${{ secrets.TF_VAR_DO_TOKEN }}
