@@ -50,7 +50,7 @@ jobs:
         repository: signalwire/actions-template
         ref: dev
 
-    - run: ls -l
+    - run: ls -l .github
       shell: bash
 
     - uses: ./github/actions/docker@dev
