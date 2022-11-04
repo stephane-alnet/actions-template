@@ -35,6 +35,10 @@ on:
         required: false
       PORTAINER_API_KEY:
         required: false
+      ASOC_KEY:
+        required: false
+      ASOC_SECRET:
+        required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
