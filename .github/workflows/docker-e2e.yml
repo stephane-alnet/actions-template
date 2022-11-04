@@ -35,8 +35,6 @@ on:
         required: false
       PORTAINER_API_KEY:
         required: false
-      SNYK_TOKEN:
-        required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -70,7 +68,7 @@ jobs:
     - uses: ./.github/actions/trivy
       name: Trivy Docker Scan
       with: 
-        IMAGE: signalwire${{ steps.dockerbp.outputs.imagetag }}
+        IMAGE: ${{ steps.dockerbp.outputs.imagetag }}
         
   #   - name: Configure buildx
   #     run: export DOCKER_CLI_EXPERIMENTAL=enabled
