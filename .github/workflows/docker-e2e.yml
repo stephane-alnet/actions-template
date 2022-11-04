@@ -56,6 +56,7 @@ jobs:
 
     - uses: ./.github/actions/docker
       name: Docker build & push
+      id: dockerbp
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
         PUSH: ${{ inputs.PUSH }}
@@ -63,6 +64,12 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: ./.github/actions/snyk
+      name: Snyk Docker Scan
+      env: 
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        IMAGE: signalwire/${{ inputs.PROJECT_NAME }}:${{ steps.dockerbp.outputs.imagetag }}
         
   #   - name: Configure buildx
   #     run: export DOCKER_CLI_EXPERIMENTAL=enabled
