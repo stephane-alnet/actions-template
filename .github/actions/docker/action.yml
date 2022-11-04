@@ -34,10 +34,6 @@ runs:
           type=semver,pattern={{major}}
           type=sha
     
-    # - name: Export tag
-    #   run: echo "::set-output name=imagetag::$${{ steps.meta.outputs.tags }}"
-    #   shell: bash
-
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
