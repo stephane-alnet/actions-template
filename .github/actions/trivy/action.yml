@@ -15,8 +15,9 @@ runs:
   #     format: 'sarif'
   #     output: 'trivy-results.sarif'
 
-  - uses: lazy-actions/gitrivy@v2
+  - uses: lazy-actions/gitrivy@v3
     with:
       token: ${{ env.GITHUB_TOKEN }}
       image: ${{ inputs.IMAGE }}
       severity: LOW
+      trivy_version: "0.22.0"
