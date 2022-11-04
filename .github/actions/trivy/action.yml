@@ -8,12 +8,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: Run Trivy vulnerability scanner
-    uses: aquasecurity/trivy-action@master
-    with:
-      image-ref: ${{ inputs.IMAGE }}
-      format: 'sarif'
-      output: 'trivy-results.sarif'
+  # - name: Run Trivy vulnerability scanner
+  #   uses: aquasecurity/trivy-action@master
+  #   with:
+  #     image-ref: ${{ inputs.IMAGE }}
+  #     format: 'sarif'
+  #     output: 'trivy-results.sarif'
 
   - uses: lazy-actions/gitrivy@v2
     with:
