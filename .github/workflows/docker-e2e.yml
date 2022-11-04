@@ -76,6 +76,6 @@ jobs:
       name: Code Scan
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # ASOC_KEY: ${{ secrets.ASOC_KEY }}
-        # ASOC_SECRET: ${{ secrets.ASOC_SECRET }}
+        ASOC_KEY: ${{ secrets.ASOC_KEY }}
+        ASOC_SECRET: ${{ secrets.ASOC_SECRET }}
         

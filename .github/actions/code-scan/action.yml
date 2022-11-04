@@ -6,7 +6,7 @@ runs:
   steps:
   - name: Run AppScan CodeSweep
     uses: HCL-TECH-SOFTWARE/appscan-codesweep-action@v2
-    with:
-      scan_base_name: "CodeSweep"
     env: 
+      asoc_key: ${{env.ASOC_KEY}}
+      asoc_secret: ${{env.ASOC_SECRET}}
       GITHUB_TOKEN: ${{env.GITHUB_TOKEN}}
