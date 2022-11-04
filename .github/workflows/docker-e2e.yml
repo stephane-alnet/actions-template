@@ -71,7 +71,7 @@ jobs:
       name: Snyk Docker Scan
       env: 
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        IMAGE: signalwire/${{ inputs.PROJECT_NAME }}:${{ steps.dockerbp.outputs.imagetag }}
+        IMAGE: signalwire${{ steps.dockerbp.outputs.imagetag }}
         
   #   - name: Configure buildx
   #     run: export DOCKER_CLI_EXPERIMENTAL=enabled
