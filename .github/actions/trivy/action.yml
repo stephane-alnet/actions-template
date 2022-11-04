@@ -20,14 +20,14 @@ runs:
   #   with:
   #     sarif_file: 'trivy-results.sarif'      
   - uses: knqyf263/trivy-issue-action@v0.0.3
-    # with:
+    with:
     #   # Label name
     #   # Default: vulnerability (this label must be created in advance)
     #   label: ''
 
     #   # Severities of vulnerabilities to be registered to GitHub Issues
     #   # Default: 'CRITICAL'
-    #   severity: ''
+      severity: 'LOW'
       
     #   # Comma separated list of directories where traversal is skipped
     #   # Default: ''
