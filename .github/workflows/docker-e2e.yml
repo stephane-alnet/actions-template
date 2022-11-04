@@ -69,6 +69,8 @@ jobs:
       name: Trivy Docker Scan
       with: 
         IMAGE: ${{ steps.dockerbp.outputs.imagetag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
   #   - name: Configure buildx
   #     run: export DOCKER_CLI_EXPERIMENTAL=enabled

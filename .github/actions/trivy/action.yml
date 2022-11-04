@@ -17,5 +17,5 @@ runs:
 
   - uses: lazy-actions/gitrivy@v3
     with:
-      token: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ env.GITHUB_TOKEN }}
       image: ${{ inputs.IMAGE }}
