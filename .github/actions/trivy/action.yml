@@ -19,3 +19,4 @@ runs:
     with:
       token: ${{ env.GITHUB_TOKEN }}
       image: ${{ inputs.IMAGE }}
+      severity: LOW
