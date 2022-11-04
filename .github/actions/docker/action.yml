@@ -9,8 +9,8 @@ inputs:
     default: "no"
 outputs:
   imagetag:
-    required: true
-
+    description: "Export image tag"
+    value: $${{ steps.meta.outputs.tags }}
 runs:
   using: "composite"
   steps:
@@ -34,9 +34,9 @@ runs:
           type=semver,pattern={{major}}
           type=sha
     
-    - name: Export tag
-      run: echo "::set-output name=imagetag::$${{ steps.meta.outputs.tags }}"
-      shell: bash
+    # - name: Export tag
+    #   run: echo "::set-output name=imagetag::$${{ steps.meta.outputs.tags }}"
+    #   shell: bash
 
     - name: Login to DockerHub
       uses: docker/login-action@v2
