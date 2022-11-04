@@ -67,10 +67,9 @@ jobs:
         DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: ./.github/actions/snyk
-      name: Snyk Docker Scan
-      env: 
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - uses: ./.github/actions/trivy
+      name: Trivy Docker Scan
+      with: 
         IMAGE: signalwire${{ steps.dockerbp.outputs.imagetag }}
         
   #   - name: Configure buildx

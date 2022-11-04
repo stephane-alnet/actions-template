@@ -1,0 +1,21 @@
+name: Trivy scan
+description: Trivy docker container vulnerability assessment
+
+inputs:
+  IMAGE:
+    required: true
+    
+runs:
+  using: "composite"
+  steps:
+  - name: Run Trivy vulnerability scanner
+    uses: aquasecurity/trivy-action@master
+    with:
+      image-ref: ${{ inputs.IMAGE }}
+      format: 'sarif'
+      output: 'trivy-results.sarif'
+
+  - name: Upload Trivy scan results to GitHub Security tab
+    uses: github/codeql-action/upload-sarif@v1
+    with:
+      sarif_file: 'trivy-results.sarif'      
