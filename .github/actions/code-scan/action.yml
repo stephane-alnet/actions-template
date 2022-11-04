@@ -1,0 +1,12 @@
+name: Code scan
+description: Code vulnerability assessment
+
+runs:
+  using: "composite"
+  steps:
+  - name: Run AppScan CodeSweep
+    uses: HCL-TECH-SOFTWARE/appscan-codesweep-action@v2
+    with:
+      scan_base_name: "CodeSweep"
+    env: 
+      GITHUB_TOKEN: ${{env.GITHUB_TOKEN}}
