@@ -13,6 +13,9 @@ inputs:
   CONTEXT:  
     required: false
     default: .
+  PLATFORMS:
+    required: false
+    default: linux/amd64
 outputs:
   imagetag:
     description: "Export image tag"
