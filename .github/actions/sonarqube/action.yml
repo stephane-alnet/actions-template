@@ -17,6 +17,7 @@ runs:
       if: ${{ inputs.BUILD_BREAKER }} == true
       uses: sonarsource/sonarqube-quality-gate-action@master
       # Force to fail step after specific time
-      timeout-minutes: 5
+      with:
+        timeout-minutes: 5
       env:
        SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
