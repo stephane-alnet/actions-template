@@ -13,11 +13,11 @@ runs:
       env:
         SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
-    - name: SonarQube Quality Gate check
-      if: ${{ inputs.BUILD_BREAKER }} == true
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      # Force to fail step after specific time
-      with:
-        timeout-minutes: 5
-      env:
-       SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+    # - name: SonarQube Quality Gate check
+    #   if: ${{ inputs.BUILD_BREAKER }} == true
+    #   uses: sonarsource/sonarqube-quality-gate-action@master
+    #   # Force to fail step after specific time
+    #   with:
+    #     timeout-minutes: 5
+    #   env:
+    #    SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
