@@ -57,14 +57,6 @@ jobs:
         repository: signalwire/actions-template
         ref: dev
         
-    - uses: ./.github/actions/sonarqube
-      name: SonarQube
-      with:
-        BUILD_BREAKER: false
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
     - uses: ./.github/actions/docker
       name: Docker build
       with:
@@ -84,3 +76,11 @@ jobs:
         IMAGE: ${{ steps.dockerbp.outputs.imagetag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: ./.github/actions/sonarqube
+      name: SonarQube
+      with:
+        BUILD_BREAKER: false
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
