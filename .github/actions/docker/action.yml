@@ -7,10 +7,17 @@ inputs:
   PUSH:
     required: false
     default: "no"
+  FILE:
+    required: false
+    default: ./Dockerfile
+  CONTEXT:  
+    required: false
+    default: .
 outputs:
   imagetag:
     description: "Export image tag"
     value: ${{ steps.meta.outputs.tags }}
+    
 runs:
   using: "composite"
   steps:
@@ -50,6 +57,8 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        file: ${{ inputs.FILE }}
+        context: ${{ inputs.CONTEXT }}
 
     - name: Test
       if: github.event_name == 'pull_request'
@@ -73,3 +82,5 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        file: ${{ inputs.FILE }}
+        context: ${{ inputs.CONTEXT }}
