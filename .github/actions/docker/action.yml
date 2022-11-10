@@ -59,6 +59,7 @@ runs:
         cache-to: type=gha,mode=max
         file: ${{ inputs.FILE }}
         context: ${{ inputs.CONTEXT }}
+        platforms: ${{ inputs.PLATFORMS }}
 
     - name: Test
       if: github.event_name == 'pull_request'
@@ -84,3 +85,4 @@ runs:
         cache-to: type=gha,mode=max
         file: ${{ inputs.FILE }}
         context: ${{ inputs.CONTEXT }}
+        platforms: ${{ inputs.PLATFORMS }}
