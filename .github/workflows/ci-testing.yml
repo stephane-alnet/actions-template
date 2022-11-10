@@ -67,7 +67,6 @@ jobs:
 
     - uses: ./.github/actions/docker
       name: Docker build
-      id: dockerbp
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
         PUSH: ${{ inputs.PUSH }}
