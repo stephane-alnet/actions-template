@@ -38,9 +38,3 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    - uses: ./.github/actions/trivy
-      name: Trivy Docker Scan
-      with: 
-        IMAGE: ${{ steps.dockerbp.outputs.imagetag }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
