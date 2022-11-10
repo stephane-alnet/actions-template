@@ -11,6 +11,7 @@ runs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        repository: ${{ github.repository }}
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
