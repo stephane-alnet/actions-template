@@ -10,34 +10,11 @@ on:
       PROJECT_NAME:
         required: true
         type: string
-      PUSH:
-        required: false
-        type: string
-        default: false
-      FILE:
-        required: false
-        type: string
-        default: ./Dockerfile
-      CONTEXT:
-        required: false
-        type: string
-        default: .
-      PLATFORMS:
-        required: false
-        type: string
-        default: linux/amd64
     secrets:
-      DOCKERHUB_USERNAME:
-        required: true
-      DOCKERHUB_TOKEN:
-        required: true
       SONAR_HOST_URL:
         required: true
       SONAR_TOKEN: 
         required: true
-
-env:
-  SONAR_HOST_URL: "http://35.196.153.159:9000"
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -47,35 +24,12 @@ jobs:
     runs-on: [ self-hosted ]
     name: CI_CHECK
 
-    outputs:
-      imagetag: ${{ steps.meta.outputs.tags }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout actions
       uses: actions/checkout@v3
       with:
         repository: signalwire/actions-template
         ref: dev
-        
-    - uses: ./.github/actions/docker
-      name: Docker build
-      with:
-        PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
-        PUSH: ${{ inputs.PUSH }}
-        FILE: ${{ inputs.FILE }}
-        CONTEXT: ${{ inputs.CONTEXT }}
-        PLATFORMS: ${{ inputs.PLATFORMS }}
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - uses: ./.github/actions/trivy
-      name: Trivy Docker Scan
-      with: 
-        IMAGE: ${{ steps.dockerbp.outputs.imagetag }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: ./.github/actions/sonarqube
       name: SonarQube
@@ -84,3 +38,9 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    - uses: ./.github/actions/trivy
+      name: Trivy Docker Scan
+      with: 
+        IMAGE: ${{ steps.dockerbp.outputs.imagetag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
