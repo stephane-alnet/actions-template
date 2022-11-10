@@ -12,5 +12,5 @@ runs:
     with:
       token: ${{ env.GITHUB_TOKEN }}
       image: ${{ inputs.IMAGE }}
-      severity: LOW
+      severity: MEDIUM
       trivy_version: "0.22.0"
