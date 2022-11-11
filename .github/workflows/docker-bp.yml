@@ -31,8 +31,6 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
-      GITHUBTOKEN:
-        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -67,7 +65,7 @@ jobs:
         CONTEXT: ${{ inputs.CONTEXT }}
         PLATFORMS: ${{ inputs.PLATFORMS }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
         DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
     
@@ -76,6 +74,6 @@ jobs:
       with:
         IMAGE: ${{ steps.build.outputs.imagetag }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
 
 
