@@ -50,7 +50,9 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-        
+
+    - run: tree
+    
     - name: Test JS
       if: ${{ inputs.LANGUAGE }} == "JavaScript"
       uses: ./.github/actions/test-javascript
