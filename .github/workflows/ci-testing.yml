@@ -58,7 +58,7 @@ jobs:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
     
     - name: SonarQube Coverage
-      if: github.event.inputs.COVERAGE != false
+      if: ${{inputs.COVERAGE}} != false
       uses: ./actions/.github/actions/sonarqube
       env:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
