@@ -1,5 +1,5 @@
 name: GPG encrypt
-description: Buld and push image to SignalWire registry
+description: Decrypt GPG files
 
 inputs:
   FILE:
@@ -9,8 +9,6 @@ inputs:
     required: true
     default: tls
   
-outputs:
-    
 runs:
   using: "composite"
   steps:

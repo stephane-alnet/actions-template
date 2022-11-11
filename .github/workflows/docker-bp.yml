@@ -38,6 +38,10 @@ on:
         required: false
         type: string
         default: tls
+      SUBMODULES_RECURSIVE:
+        required: false
+        type: boolean
+        default: false
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -47,11 +51,12 @@ on:
         required: true
       GPG_PASSPHRASE:
         required: false
+      GH_BOT_DEPLOY_KEY:
+        required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "deploy"
-  ci:
+  build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest 
     name: Build
@@ -78,6 +83,12 @@ jobs:
         TARGET_NAME: ${{ inputs.GPG_TARGET_NAME }}
       env:
         PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+    - uses: actions/checkout@v3
+      if: ${{ inputs.SUBMODULES_RECURSIVE }} == true
+      with:
+        ssh-key: ${{ env.GH_BOT_DEPLOY_KEY }}
+        submodules: 'recursive'
 
     - uses: ./actions/.github/actions/docker
       name: Docker build
