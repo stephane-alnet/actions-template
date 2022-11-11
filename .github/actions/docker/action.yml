@@ -10,9 +10,9 @@ inputs:
   FILE:
     required: false
     default: ./Dockerfile
-  # CONTEXT:  
-  #   required: false
-  #   default: .
+  CONTEXT:  
+    required: false
+    default: .
   PLATFORMS:
     required: false
     default: linux/amd64
@@ -88,5 +88,5 @@ runs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         file: ${{ inputs.FILE }}
-        # context: ${{ inputs.CONTEXT }}
+        context: ${{ inputs.CONTEXT }}
         platforms: ${{ inputs.PLATFORMS }}
