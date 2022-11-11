@@ -1,4 +1,5 @@
 name: SonarQube code analysys
+description: Run code coverage analysys
 
 runs:
   using: "composite"
