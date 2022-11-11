@@ -34,10 +34,6 @@ on:
         required: false
         type: string
         default: tls.zip.asc
-      GPG_TARGET_NAME:
-        required: false
-        type: string
-        default: tls
       SUBMODULES_RECURSIVE:
         required: false
         type: boolean
@@ -80,7 +76,6 @@ jobs:
       if: ${{ inputs.ENABLE_GPG }} == true
       with:
         FILE: ${{ inputs.GPG_FILE}}
-        TARGET_NAME: ${{ inputs.GPG_TARGET_NAME }}
       env:
         PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
