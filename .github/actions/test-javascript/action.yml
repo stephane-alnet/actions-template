@@ -2,9 +2,17 @@ name: JavaScript Unit Test
 description: JavaScript Unit Test report
 
 
+inputs:
+  NODE_VERSION:
+    required: false
+    default: "19"
+
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.NODE_VERSION }}
     - run: npm ci                   # install packages
       shell: bash
     

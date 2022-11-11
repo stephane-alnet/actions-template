@@ -22,6 +22,10 @@ on:
         required: true
         default: "JavaScript"
         type: string
+      NODE_VERSION:
+        required: false
+        default: "19"
+        type: string
     secrets:
       SONAR_HOST_URL:
         required: true
@@ -46,6 +50,8 @@ jobs:
     - name: Test JS
       if: ${{ inputs.LANGUAGE }} == "JavaScript"
       uses: ./.github/actions/test-javascript
+      with:
+        NODE_VERSION: ${{ inputs.NODE_VERSION }}
 
     - uses: actions/checkout@v2
       with:
