@@ -6,6 +6,7 @@ name: CI checking
 on:
 
   workflow_call:
+  workflow_run:
     inputs:
       PROJECT_NAME:
         required: true
