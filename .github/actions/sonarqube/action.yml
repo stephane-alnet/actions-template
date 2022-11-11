@@ -13,6 +13,7 @@ runs:
         SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
     - name: SonarQube Quality Gate check
       uses: sonarsource/sonarqube-quality-gate-action@master
+      if: github.event_name == 'pull_request'
       # Force to fail step after specific time
       with:
         timeout-minutes: 5
