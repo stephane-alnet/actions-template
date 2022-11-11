@@ -57,7 +57,6 @@ jobs:
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
     
-    - run: echo "COVERAGE=${{ inputs.COVERAGE}}" >> $GITHUB_ENV
     - name: SonarQube Coverage
       if: ${{ inputs.COVERAGE != false }}
       uses: ./actions/.github/actions/sonarqube
