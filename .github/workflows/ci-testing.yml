@@ -47,15 +47,16 @@ jobs:
         repository: signalwire/actions-template
         ref: dev
 
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
     - name: Test JS
       if: ${{ inputs.LANGUAGE }} == "JavaScript"
       uses: ./.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
 
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
 
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
