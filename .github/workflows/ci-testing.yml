@@ -41,6 +41,10 @@ jobs:
     name: CI_CHECK
 
     steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
     - name: Checkout actions
       uses: actions/checkout@v3
       with:
@@ -48,10 +52,6 @@ jobs:
         ref: dev
         path: actions
 
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        path: main
 
     - run: ls -l
 
