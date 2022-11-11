@@ -26,4 +26,4 @@ runs:
   - name: unzip files
     uses: montudor/action-zip@v1
     with:
-      args: unzip -qq gpg.zip -d ${{ inputs.TARGET_NAME }}
+      args: unzip -qq gpg.zip 
