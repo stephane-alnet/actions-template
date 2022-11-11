@@ -10,10 +10,6 @@ on:
       PROJECT_NAME:
         required: true
         type: string
-      BUILD_BREAKER:
-        required: false
-        type: string
-        default: "yes"
       DOTNET-VERSION:
         required: false
         default: "3.1.402"
@@ -26,6 +22,10 @@ on:
         required: false
         default: "19"
         type: string
+      COVERAGE:
+        required: false
+        type: boolean
+        default: true
     secrets:
       SONAR_HOST_URL:
         required: true
@@ -52,15 +52,15 @@ jobs:
         ref: dev
         path: actions
 
-
-    - run: ls -l
-
     - name: Test JS
-      if: ${{ inputs.LANGUAGE }} == "JavaScript"
+      if:  inputs.LANGUAGE == "JavaScript"
       uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
     
     - name: SonarQube Coverage
-      # if: ${{ inputs.COVERAGE }}
+      if: inputs.COVERAGE 
       uses: ./actions/.github/actions/sonarqube
+      env:
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_TOKEB: ${{ secrets.SONAR_TOKEB }}
