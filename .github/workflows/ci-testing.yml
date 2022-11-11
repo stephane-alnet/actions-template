@@ -46,16 +46,17 @@ jobs:
       with:
         repository: signalwire/actions-template
         ref: dev
+        path: actions
 
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
-    - run: tree
-    
+    - run: ls -l
+
     - name: Test JS
       if: ${{ inputs.LANGUAGE }} == "JavaScript"
-      uses: ./.github/actions/test-javascript
+      uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
 
