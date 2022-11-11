@@ -28,9 +28,9 @@ on:
         default: true
     secrets:
       SONAR_HOST_URL:
-        required: true
+        required: false
       SONAR_TOKEN: 
-        required: true
+        required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
