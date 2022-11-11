@@ -51,14 +51,16 @@ jobs:
         ref: dev
         path: actions
 
+    - run: echo "LANGUAGE=${{ inputs.LANGUAGE}}" >> $GITHUB_ENV
     - name: Test JS
-      if:  "${{github.event.inputs.LANGUAGE == 'JavaScript'}}"
+      if:  $LANGUAGE == 'JavaScript'
       uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
     
+    - run: echo "COVERAGE=${{ inputs.COVERAGE}}" >> $GITHUB_ENV
     - name: SonarQube Coverage
-      if: ${{inputs.COVERAGE}} != false
+      if: $COVERAGE != false
       uses: ./actions/.github/actions/sonarqube
       env:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
