@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --ci",
     "ci": "ci"
-    },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/signalwire/actions-template.git"
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/signalwire/actions-template#readme",
   "dependencies": {
     "jest": "^29.3.1",
+    "jest-junit": "^14.0.1",
     "save-dev": "^0.0.1-security"
   }
 }
