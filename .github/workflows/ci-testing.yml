@@ -53,7 +53,7 @@ jobs:
 
     - run: echo "LANGUAGE=${{ inputs.LANGUAGE}}" >> $GITHUB_ENV
     - name: Test JS
-      if:  ${{ inputs.LANGUAGE == 'JavaScript' }}
+      if:  ${{ env.LANGUAGE == 'JavaScript' }}
       uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
