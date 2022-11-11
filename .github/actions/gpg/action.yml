@@ -12,15 +12,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-  
-  - name: Import GPG key
-    id: import_gpg
-    uses: crazy-max/ghaction-import-gpg@v5
-    with:
-      passphrase: ${{ env.PASSPHRASE }}
-
-  - name: Descrpy file
-    run: echo $PASSPHRASE | gpg -dq --batch --passphrase-fd 0 ${{ inputs.FILE }} > gpg.zip
+  - name: Decrypt secrets
+    run: |
+      echo ${{ env.PASSPHRASE }} | gpg -dq --batch --passphrase-fd 0 ${{ inputs.FILE }} > gpg.zip
     shell: bash
 
   - name: unzip files
