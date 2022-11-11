@@ -52,7 +52,7 @@ jobs:
         path: actions
 
     - name: Test JS
-      if:  $inputs.LANGUAGE == 'JavaScript'
+      if:  $inputs.LANGUAGE == 'JavaScript' 
       uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
