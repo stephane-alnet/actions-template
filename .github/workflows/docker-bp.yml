@@ -73,14 +73,14 @@ jobs:
         
     - uses: ./actions/.github/actions/gpg
       name: Enable GPG
-      if: ${{ inputs.ENABLE_GPG }} == true
+      if: ${{ inputs.ENABLE_GPG  == true }}
       with:
         FILE: ${{ inputs.GPG_FILE}}
       env:
         PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
     - uses: actions/checkout@v3
-      if: ${{ inputs.SUBMODULES_RECURSIVE }} == true
+      if: ${{ inputs.SUBMODULES_RECURSIVE  == true }}
       with:
         ssh-key: ${{ env.GH_BOT_DEPLOY_KEY }}
         submodules: 'recursive'
