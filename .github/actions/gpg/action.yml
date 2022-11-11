@@ -1,0 +1,31 @@
+name: GPG encrypt
+description: Buld and push image to SignalWire registry
+
+inputs:
+  FILE:
+    required: true
+    default: tls.zip.asc
+  TARGET_NAME:
+    required: true
+    default: tls
+  
+outputs:
+    
+runs:
+  using: "composite"
+  steps:
+  
+  - name: Import GPG key
+    id: import_gpg
+    uses: crazy-max/ghaction-import-gpg@v5
+    with:
+      passphrase: ${{ env.PASSPHRASE }}
+
+  - name: Descrpy file
+    run: echo $PASSPHRASE | gpg -dq --batch --passphrase-fd 0 ${{ inputs.FILE }} > gpg.zip
+    shell: bash
+
+  - name: unzip files
+    uses: montudor/action-zip@v1
+    with:
+      args: unzip -qq gpg.zip -d ${{ inputs.TARGET_NAME }}

@@ -26,6 +26,18 @@ on:
         required: false
         type: string
         default: linux/amd64
+      ENABLE_GPG:
+        required: false
+        type: boolean
+        default: false
+      GPG_FILE:
+        required: false
+        type: string
+        default: tls.zip.asc
+      GPG_TARGET_NAME:
+        required: false
+        type: string
+        default: tls
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -33,18 +45,19 @@ on:
         required: true
       GITHUBTOKEN:
         required: true
+      GPG_PASSPHRASE:
+        required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "deploy"
   ci:
     # The type of runner that the job will run on
-    runs-on: [ ubuntu-latest ]
+    runs-on: ubuntu-latest 
     name: Build
 
     outputs:
       imagetag: ${{ steps.meta.outputs.tags }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - uses: actions/checkout@v3
       with:
@@ -57,6 +70,15 @@ jobs:
         ref: dev
         path: actions
         
+    - uses: ./actions/.github/actions/gpg
+      name: Enable GPG
+      if: ${{ inputs.ENABLE_GPG }} == true
+      with:
+        FILE: ${{ inputs.GPG_FILE}}
+        TARGET_NAME: ${{ inputs.GPG_TARGET_NAME }}
+      env:
+        PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
     - uses: ./actions/.github/actions/docker
       name: Docker build
       id: build
@@ -76,6 +98,6 @@ jobs:
       with:
         IMAGE: ${{ steps.build.outputs.imagetag }}
       env:
-        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
 
