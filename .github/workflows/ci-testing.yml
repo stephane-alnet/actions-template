@@ -10,6 +10,18 @@ on:
       PROJECT_NAME:
         required: true
         type: string
+      BUILD_BREAKER:
+        required: false
+        type: string
+        default: "yes"
+      DOTNET-VERSION:
+        required: false
+        default: "3.1.402"
+        type: string
+      LANGUAGE:
+        required: true
+        default: "JavaScript"
+        type: string
     secrets:
       SONAR_HOST_URL:
         required: true
@@ -21,23 +33,37 @@ jobs:
   # This workflow contains a single job called "deploy"
   ci:
     # The type of runner that the job will run on
-    runs-on: [ self-hosted ]
+    # runs-on: [ self-hosted ]
+    runs-on: [ ubuntu-latest ]
     name: CI_CHECK
 
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
+      if: ${{ !env.ACT }}
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    # - name: SonarQube Quality Gate check
-    #   if: ${{ inputs.BUILD_BREAKER }} == true
-    #   uses: sonarsource/sonarqube-quality-gate-action@master
-    #   # Force to fail step after specific time
-    #   with:
-    #     timeout-minutes: 5
-    #   env:
-    #    SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+        
+    - name: SonarQube Quality Gate check
+      if: ${{ !env.ACT }}
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      # Force to fail step after specific time
+      with:
+        timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+
+    - name: Checkout actions
+      uses: actions/checkout@v3
+      with:
+        repository: signalwire/actions-template
+        ref: dev
+
+    - name: Test JS
+      if: ${{ inputs.LANGUAGE }} == "JavaScript"
+      uses: ./.github/actions/unit-test-javascript
