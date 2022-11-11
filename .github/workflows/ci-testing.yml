@@ -52,13 +52,13 @@ jobs:
         path: actions
 
     - name: Test JS
-      if:  $inputs.LANGUAGE == 'JavaScript' 
+      if:  github.event.inputs.LANGUAGE == 'JavaScript'
       uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
     
     - name: SonarQube Coverage
-      if: ${{inputs.COVERAGE}} 
+      if: github.event.inputs.COVERAGE
       uses: ./actions/.github/actions/sonarqube
       env:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
