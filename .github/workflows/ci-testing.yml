@@ -60,7 +60,7 @@ jobs:
     
     - run: echo "COVERAGE=${{ inputs.COVERAGE}}" >> $GITHUB_ENV
     - name: SonarQube Coverage
-      if: .env.COVERAGE != 'false'
+      if: ${{env.COVERAGE != 'false'}}
       uses: ./actions/.github/actions/sonarqube
       env:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
