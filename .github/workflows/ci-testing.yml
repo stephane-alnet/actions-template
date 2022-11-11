@@ -51,7 +51,7 @@ jobs:
         ref: dev
         path: actions
 
-    - run: echo "LANGUAGE=${{ inputs.LANGUAGE}}" >> $GITHUB_ENV
+    # - run: echo "LANGUAGE=${{ inputs.LANGUAGE}}" >> $GITHUB_ENV
     - name: Test JS
       if:  ${{ inputs.LANGUAGE == 'JavaScript' }}
       uses: ./actions/.github/actions/test-javascript
