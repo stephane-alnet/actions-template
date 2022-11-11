@@ -25,6 +25,10 @@ on:
         required: false
         type: boolean
         default: true
+      RUBY_VERSION:
+        required: false
+        type: string
+        default: "2.7.4"
     secrets:
       SONAR_HOST_URL:
         required: false
@@ -52,10 +56,18 @@ jobs:
         path: actions
 
     - name: Test JS
-      if:  ${{ inputs.LANGUAGE == 'JavaScript' }}
+      if: ${{ inputs.LANGUAGE == 'JavaScript' }}
       uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
+    
+    - name: Test Ruby
+      if: ${{ inputs.LANGUAGE == 'JavaScript' }}
+      uses: ./actions/.github/actions/test-ruby
+      with:
+        RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: SonarQube Coverage
       if: ${{ inputs.COVERAGE != false }}

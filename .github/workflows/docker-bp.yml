@@ -31,21 +31,14 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
-      SONAR_HOST_URL:
-        required: true
-      SONAR_TOKEN: 
-        required: true
 
-env:
-  SONAR_HOST_URL: "http://35.196.153.159:9000"
-      
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "deploy"
   ci:
     # The type of runner that the job will run on
-    runs-on: [ self-hosted ]
-    name: CI_CHECK
+    runs-on: [ ubuntu-latest ]
+    name: Build
 
     outputs:
       imagetag: ${{ steps.meta.outputs.tags }}
