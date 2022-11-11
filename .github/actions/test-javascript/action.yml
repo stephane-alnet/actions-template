@@ -11,6 +11,9 @@ runs:
     - run: npm test                 # run tests (configured to use jest-junit reporter)
       shell: bash
 
+    - run: npm coverage
+      shell: bash
+
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: success() || failure()    # run this step even if previous step failed

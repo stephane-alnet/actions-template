@@ -37,6 +37,16 @@ jobs:
     name: CI_CHECK
 
     steps:
+    - name: Checkout actions
+      uses: actions/checkout@v3
+      with:
+        repository: signalwire/actions-template
+        ref: dev
+
+    - name: Test JS
+      if: ${{ inputs.LANGUAGE }} == "JavaScript"
+      uses: ./.github/actions/test-javascript
+
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
@@ -56,13 +66,3 @@ jobs:
         timeout-minutes: 5
       env:
        SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
-
-    - name: Checkout actions
-      uses: actions/checkout@v3
-      with:
-        repository: signalwire/actions-template
-        ref: dev
-
-    - name: Test JS
-      if: ${{ inputs.LANGUAGE }} == "JavaScript"
-      uses: ./.github/actions/unit-test-javascript
