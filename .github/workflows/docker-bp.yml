@@ -57,6 +57,7 @@ jobs:
         
     - uses: ./actions/.github/actions/docker
       name: Docker build
+      id: build
       with:
         PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
         PUSH: ${{ inputs.PUSH }}
@@ -67,5 +68,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
+    
+    - uses: ./actions/.github/actions/trivy
+      name: Trivy Scan
+      with:
+        IMAGE: ${{ steps.build.outputs.imagetag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
