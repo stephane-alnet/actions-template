@@ -19,7 +19,7 @@ runs:
     - run: npm test                 # run tests (configured to use jest-junit reporter)
       shell: bash
 
-    - run: npm coverage
+    - run: npm run coverage         # generate coverage reports
       shell: bash
 
     - name: Test Report
