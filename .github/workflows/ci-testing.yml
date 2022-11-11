@@ -51,12 +51,13 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        path: main
 
     - run: ls -l
 
     - name: Test JS
       if: ${{ inputs.LANGUAGE }} == "JavaScript"
-      uses: ../actions/.github/actions/test-javascript
+      uses: ./actions/.github/actions/test-javascript
       with:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
 
