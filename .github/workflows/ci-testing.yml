@@ -16,7 +16,6 @@ on:
         type: string
       LANGUAGE:
         required: true
-        default: "JavaScript"
         type: string
       NODE_VERSION:
         required: false
