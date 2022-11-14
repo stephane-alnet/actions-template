@@ -85,6 +85,10 @@ jobs:
         ssh-key: ${{ env.GH_BOT_DEPLOY_KEY }}
         submodules: 'recursive'
 
+    - name: list repo
+      run: ls -l
+      shell: bash
+
     - uses: ./actions/.github/actions/docker
       name: Docker build
       id: build

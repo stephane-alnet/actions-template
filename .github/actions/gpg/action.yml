@@ -20,11 +20,3 @@ runs:
   - name: unzip files
     run: unzip -qq gpg.zip 
     shell: bash
-
-  - name: list files
-    run: ls -l
-    shell: bash
-  
-  - name: fix permission
-    run: chmod 777 -R .
-    shell: bash
