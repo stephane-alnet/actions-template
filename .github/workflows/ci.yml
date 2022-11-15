@@ -1,0 +1,117 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Docker Build, Scan & Push
+
+# Controls when the workflow will run
+on:
+
+  workflow_call:
+    inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
+      DOTNET-VERSION:
+        required: false
+        default: "3.1.402"
+        type: string
+      LANGUAGE:
+        required: false
+        type: string
+      NODE_VERSION:
+        required: false
+        default: "19"
+        type: string
+      COVERAGE:
+        required: false
+        type: boolean
+        default: true
+      RUBY_VERSION:
+        required: false
+        type: string
+        default: "2.7.4"
+      PUSH:
+        required: false
+        type: string
+        default: false
+      FILE:
+        required: false
+        type: string
+        default: ./Dockerfile
+      CONTEXT:
+        required: false
+        type: string
+        default: .
+      PLATFORMS:
+        required: false
+        type: string
+        default: linux/amd64
+      ENABLE_GPG:
+        required: false
+        type: boolean
+        default: false
+      GPG_FILE:
+        required: false
+        type: string
+        default: tls.zip.asc
+      SUBMODULES_RECURSIVE:
+        required: false
+        type: boolean
+        default: false
+      STACK_NAME:
+        required: false
+        type: string
+      DEPLOY:
+        required: false
+        type: boolean
+        default: true
+    secrets:
+      SONAR_HOST_URL:
+        required: false
+      SONAR_TOKEN: 
+        required: false
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      GITHUBTOKEN:
+        required: true
+      GPG_PASSPHRASE:
+        required: false
+      GH_BOT_DEPLOY_KEY:
+        required: false
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  CHECK:
+    name: CI
+    uses: signalwire/actions-template/.github/workflows/ci-check.yml@main
+    with:
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+      LANGUAGE: ${{ inputs.LANGUAGE }}
+      COVERAGE: ${{ inputs.COVERAGE }}
+      NODE_VERSION: ${{ inputs.NODE_VERSION }}
+      RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
+      DOTNET-VERSION: ${{ inputs.DOTNET-VERSION }}
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  BUILD:
+    name: BUILD
+    needs: CHECK
+    uses: signalwire/actions-template/.github/workflows/ci-build.yml@main
+    with:
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+      SUBMODULES_RECURSIVE: ${{ inputs.SUBMODULES_RECURSIVE }}
+      ENABLE_GPG: ${{ inputs.ENABLE_GPG }}
+      GPG_FILE: ${{ inputs.GPG_FILE }}
+      PUSH: ${{ inputs.PUSH }}
+      FILE: ${{ inputs.FILE }}
+      CONTEXT: ${{ inputs.CONTEXT }}
+      PLATFORMS: ${{ inputs.PLATFORMS }}
+    secrets:
+      GH_BOT_DEPLOY_KEY: ${{ secrets.GH_BOT_DEPLOY_KEY }}
+      GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+      DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
+

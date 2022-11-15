@@ -1,0 +1,16 @@
+name: Trivy scan
+description: Trivy docker container vulnerability assessment
+
+inputs:
+  IMAGE:
+    required: true
+    
+runs:
+  using: "composite"
+  steps:
+  - uses: lazy-actions/gitrivy@v3
+    with:
+      token: ${{ env.GITHUB_TOKEN }}
+      image: ${{ inputs.IMAGE }}
+      severity: HIGH
+      trivy_version: "0.22.0"

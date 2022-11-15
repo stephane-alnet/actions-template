@@ -1,0 +1,109 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Docker Build, Scan & Push
+
+# Controls when the workflow will run
+on:
+
+  workflow_call:
+    inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
+      PUSH:
+        required: false
+        type: string
+        default: false
+      FILE:
+        required: false
+        type: string
+        default: ./Dockerfile
+      CONTEXT:
+        required: false
+        type: string
+        default: .
+      PLATFORMS:
+        required: false
+        type: string
+        default: linux/amd64
+      ENABLE_GPG:
+        required: false
+        type: boolean
+        default: false
+      GPG_FILE:
+        required: false
+        type: string
+        default: tls.zip.asc
+      SUBMODULES_RECURSIVE:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      GITHUBTOKEN:
+        required: true
+      GPG_PASSPHRASE:
+        required: false
+      GH_BOT_DEPLOY_KEY:
+        required: false
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest 
+    name: BUILD
+
+    outputs:
+      IMAGE_TAG: ${{ steps.build.outputs.IMAGE_TAG }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/checkout@v3
+      if: ${{ inputs.SUBMODULES_RECURSIVE  == true }}
+      with:
+        ssh-key: ${{ env.GH_BOT_DEPLOY_KEY }}
+        submodules: 'recursive'
+
+    - name: Checkout actions
+      uses: actions/checkout@v3
+      with:
+        repository: signalwire/actions-template
+        ref: main
+        path: actions
+        
+    - uses: ./actions/.github/actions/gpg
+      name: Enable GPG
+      if: ${{ inputs.ENABLE_GPG  == true }}
+      with:
+        FILE: ${{ inputs.GPG_FILE }}
+      env:
+        PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+    - uses: ./actions/.github/actions/docker
+      name: Docker build
+      id: build
+      with:
+        PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+        PUSH: ${{ inputs.PUSH }}
+        FILE: ${{ inputs.FILE }}
+        CONTEXT: ${{ inputs.CONTEXT }}
+        PLATFORMS: ${{ inputs.PLATFORMS }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+        DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
+    
+    - uses: ./actions/.github/actions/trivy
+      name: Trivy Scan
+      if: github.event_name == 'pull_request'
+      with:
+        IMAGE: ${{ steps.build.outputs.imagetag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}

@@ -1,0 +1,32 @@
+name: JavaScript Unit Test
+description: JavaScript Unit Test report
+
+
+inputs:
+  NODE_VERSION:
+    required: false
+    default: "19"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.NODE_VERSION }}
+    - run: npm ci                   # install packages
+      shell: bash
+    
+    - run: npm test                 # run tests (configured to use jest-junit reporter)
+      shell: bash
+
+    - run: npm run coverage         # generate coverage reports
+      shell: bash
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: JEST Tests            # Name of the check run which will be created
+        path: reports/jest-*.xml    # Path to test results
+        reporter: jest-junit        # Format of test results
+        fail-on-error: 'true'       # Fail the pipeline on error

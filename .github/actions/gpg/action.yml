@@ -1,0 +1,22 @@
+name: GPG encrypt
+description: Decrypt GPG files
+
+inputs:
+  FILE:
+    required: true
+    default: tls.zip.asc
+  TARGET_NAME:
+    required: true
+    default: tls
+  
+runs:
+  using: "composite"
+  steps:
+  - name: Decrypt secrets
+    run: |
+      echo ${{ env.PASSPHRASE }} | gpg -dq --batch --passphrase-fd 0 ${{ inputs.FILE }} > gpg.zip
+    shell: bash
+
+  - name: unzip files
+    run: unzip -qq gpg.zip 
+    shell: bash
