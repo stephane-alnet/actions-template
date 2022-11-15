@@ -1,0 +1,51 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Docker Build, Scan & Push
+
+# Controls when the workflow will run
+on:
+
+  workflow_call:
+    inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
+      DOTNET-VERSION:
+        required: false
+        default: "3.1.402"
+        type: string
+      LANGUAGE:
+        required: true
+        type: string
+      NODE_VERSION:
+        required: false
+        default: "19"
+        type: string
+      COVERAGE:
+        required: false
+        type: boolean
+        default: true
+      RUBY_VERSION:
+        required: false
+        type: string
+        default: "2.7.4"
+    secrets:
+      SONAR_HOST_URL:
+        required: false
+      SONAR_TOKEN: 
+        required: false
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  CI_CHECK:
+    name: 'CI'
+    uses: signalwire/actions-template/.github/workflows/ci-testing.yml@dev
+    with:
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+      LANGUAGE: ${{ inputs.LANGUAGE }}
+      COVERAGE: ${{ inputs.COVERAGE }}
+      NODE_VERSION: ${{ inputs.NODE_VERSION }}
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
