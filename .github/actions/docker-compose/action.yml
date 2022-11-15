@@ -9,6 +9,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+  - uses: KengoTODA/actions-setup-docker-compose@main
+    with:
+      version: '2.12.1'
   - name: Run docker-compose
-    run: docker compose -f ${{ inputs.COMPOSE_FILE }} up -d
+    run: docker-compose -f ${{ inputs.COMPOSE_FILE }} up -d
     shell: bash
