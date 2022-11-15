@@ -10,5 +10,5 @@ runs:
   using: "composite"
   steps:
   - name: Run docker-compose
-    run: docker-compose -f ${{ inputs.COMPOSE_FILE }} up -d
+    run: docker compose -f ${{ inputs.COMPOSE_FILE }} up -d
     shell: bash
