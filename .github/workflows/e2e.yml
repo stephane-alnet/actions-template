@@ -45,7 +45,7 @@ jobs:
       LANGUAGE: ${{ inputs.LANGUAGE }}
       COVERAGE: ${{ inputs.COVERAGE }}
       NODE_VERSION: ${{ inputs.NODE_VERSION }}
+      RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
