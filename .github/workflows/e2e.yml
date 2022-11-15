@@ -29,16 +29,54 @@ on:
         required: false
         type: string
         default: "2.7.4"
+      PUSH:
+        required: false
+        type: string
+        default: false
+      FILE:
+        required: false
+        type: string
+        default: ./Dockerfile
+      CONTEXT:
+        required: false
+        type: string
+        default: .
+      PLATFORMS:
+        required: false
+        type: string
+        default: linux/amd64
+      ENABLE_GPG:
+        required: false
+        type: boolean
+        default: false
+      GPG_FILE:
+        required: false
+        type: string
+        default: tls.zip.asc
+      SUBMODULES_RECURSIVE:
+        required: false
+        type: boolean
+        default: false
     secrets:
       SONAR_HOST_URL:
         required: false
       SONAR_TOKEN: 
         required: false
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      GITHUBTOKEN:
+        required: true
+      GPG_PASSPHRASE:
+        required: false
+      GH_BOT_DEPLOY_KEY:
+        required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  CI_CHECK:
-    name: 'CI'
+  CHECK:
+    name: CI
     uses: signalwire/actions-template/.github/workflows/ci-testing.yml@dev
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
@@ -46,6 +84,25 @@ jobs:
       COVERAGE: ${{ inputs.COVERAGE }}
       NODE_VERSION: ${{ inputs.NODE_VERSION }}
       RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
+      DOTNET-VERSION: ${{ inputs.DOTNET-VERSION }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  BUILD:
+    name: BUILD
+    uses: signalwire/actions-template/.github/workflows/docker-bp.yml@dev
+    with:
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+      SUBMODULES_RECURSIVE: ${{ inputs.SUBMODULES_RECURSIVE }}
+      ENABLE_GPG: ${{ inputs.ENABLE_GPG }}
+      GPG_FILE: ${{ inputs.GPG_FILE }}
+      PUSH: ${{ inputs.PUSH }}
+      FILE: ${{ inputs.FILE }}
+      CONTEXT: ${{ inputs.CONTEXT }}
+      PLATFORMS: ${{ inputs.PLATFORMS }}
+    secrets:
+      GH_BOT_DEPLOY_KEY: ${{ secrets.GH_BOT_DEPLOY_KEY }}
+      GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+      DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
