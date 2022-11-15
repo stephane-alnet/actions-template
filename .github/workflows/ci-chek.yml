@@ -10,10 +10,6 @@ on:
       PROJECT_NAME:
         required: true
         type: string
-      DOTNET-VERSION:
-        required: false
-        default: "3.1.402"
-        type: string
       LANGUAGE:
         required: true
         type: string
@@ -29,6 +25,18 @@ on:
         required: false
         type: string
         default: "2.7.4"
+      TEST_DEPENDENCIES:
+        required: false
+        type: boolean
+        default: false
+      DEPENDENCIES_FILE:
+        required: false
+        type: string
+        default: ./profisioning/docker-compose.yml
+      DOTNET_VERSION:
+        required: false
+        type: string
+        default: "6.0.403"
     secrets:
       SONAR_HOST_URL:
         required: false
@@ -57,6 +65,18 @@ jobs:
         ref: main
         path: actions
 
+    - name: Up Test dependencies
+      if: ${{ inputs.TEST_DEPENDENCIES == true}}
+      uses: ./actions/.github/actions/docker-compose
+      with:
+        COMPOSE_FILE: ${{ inputs.DEPENDENCIES_FILE }}
+
+    - name: Test .NET
+      if: ${{ inputs.LANGUAGE == 'dot-net' }}
+      uses: ./actions/.github/actions/test-dotnet
+      with:
+        DOTNET_VERSION: ${{ inputs.DOTNET_VERSION }}
+    
     - name: Test JS
       if: ${{ inputs.LANGUAGE == 'JavaScript' }}
       uses: ./actions/.github/actions/test-javascript

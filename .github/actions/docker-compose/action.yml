@@ -1,0 +1,15 @@
+name: Run Docker compose file
+description: Buld and push image to SignalWire registry
+
+inputs:
+  COMPOSE_FILE:
+    required: false
+    default: provisioning/docker-compose.yml
+    
+runs:
+  using: "composite"
+  steps:
+  - uses: isbang/compose-action@v1.4.0
+    with:
+      compose-file: |
+        ${{ inputs.COMPOSE_FILE }}
