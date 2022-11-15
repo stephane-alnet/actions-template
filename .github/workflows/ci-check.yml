@@ -52,6 +52,8 @@ on:
         required: false
       DOCKERHUB_TOKEN:
         required: false
+      GH_BOT_DEPLOY_KEY:
+        required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
