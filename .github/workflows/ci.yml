@@ -57,10 +57,6 @@ on:
         required: false
         type: boolean
         default: false
-      CI:
-        required: false
-        type: boolean
-        default: true
       STACK_NAME:
         required: false
         type: string
@@ -83,17 +79,12 @@ on:
         required: false
       GH_BOT_DEPLOY_KEY:
         required: false
-      PORTAINER_API_KEY:
-        required: false
-      ENDPOINT_ID:
-        required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   CHECK:
     name: CI
-    uses: signalwire/actions-template/.github/workflows/ci-testing.yml@dev
-    if: ${{ inputs.CI == true }}
+    uses: signalwire/actions-template/.github/workflows/ci-check.yml
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       LANGUAGE: ${{ inputs.LANGUAGE }}
@@ -108,7 +99,7 @@ jobs:
   BUILD:
     name: BUILD
     needs: CHECK
-    uses: signalwire/actions-template/.github/workflows/docker-bp.yml@dev
+    uses: signalwire/actions-template/.github/workflows/ci-build.yml
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       SUBMODULES_RECURSIVE: ${{ inputs.SUBMODULES_RECURSIVE }}
@@ -124,14 +115,3 @@ jobs:
       DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
 
-  DEPLOY:
-    name: DEPLOY
-    needs: BUILD
-    if: ${{ inputs.DEPLOY == true}}
-    uses: signalwire/actions-template/.github/workflows/swarm-deploy.yml@dev
-    with:
-      STACK_NAME: ${{ inputs.STACK_NAME}}
-    secrets:
-      PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
-      ENDPOINT_ID: ${{ secrets.ENDPOINT_ID }}
-      IMAGE_TAG: ${{ needs.BUILD.outputs.IMAGE_TAG }}
