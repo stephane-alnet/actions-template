@@ -52,7 +52,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: signalwire/actions-template
-        ref: dev
+        ref: main
         path: actions
 
     - name: Test JS
