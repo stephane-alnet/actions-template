@@ -57,6 +57,10 @@ on:
         required: false
         type: boolean
         default: false
+      CI:
+        required: false
+        type: boolean
+        default: true
     secrets:
       SONAR_HOST_URL:
         required: false
@@ -78,6 +82,7 @@ jobs:
   CHECK:
     name: CI
     uses: signalwire/actions-template/.github/workflows/ci-testing.yml@dev
+    if: ${{ inputs.CI == true }}
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       LANGUAGE: ${{ inputs.LANGUAGE }}
