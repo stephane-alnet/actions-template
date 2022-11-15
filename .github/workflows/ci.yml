@@ -69,6 +69,8 @@ on:
         required: false
       SONAR_TOKEN: 
         required: false
+      SONAR_PROJECT_KEY: 
+        required: false
       DOCKERHUB_USERNAME:
         required: true
       DOCKERHUB_TOKEN:
@@ -95,6 +97,7 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
 
   BUILD:
     name: BUILD
@@ -112,6 +115,6 @@ jobs:
     secrets:
       GH_BOT_DEPLOY_KEY: ${{ secrets.GH_BOT_DEPLOY_KEY }}
       GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
-      DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 

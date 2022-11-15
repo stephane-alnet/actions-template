@@ -34,6 +34,8 @@ on:
         required: false
       SONAR_TOKEN: 
         required: false
+      SONAR_PROJECT_KEY:
+        required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -72,7 +74,11 @@ jobs:
     - name: SonarQube Coverage
       if: ${{ inputs.COVERAGE == true }}
       uses: ./actions/.github/actions/sonarqube
+      with:
+        LANGUAGE: ${{ inputs.LANGUAGE }}
       env:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
 
