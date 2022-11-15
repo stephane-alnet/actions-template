@@ -85,7 +85,7 @@ on:
         required: false
       PORTAINER_API_KEY:
         required: false
-      ENDPOINTID:
+      ENDPOINT_ID:
         required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -133,4 +133,4 @@ jobs:
       STACK_NAME: ${{ inputs.STACK_NAME}}
     secrets:
       PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
-      ENDPOINTID: ${{ secrets.ENDPOINTID }}
+      ENDPOINT_ID: ${{ secrets.ENDPOINT_ID }}
