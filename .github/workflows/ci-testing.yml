@@ -70,7 +70,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: SonarQube Coverage
-      if: ${{ inputs.COVERAGE != false }}
+      if: ${{ inputs.COVERAGE == true }}
       uses: ./actions/.github/actions/sonarqube
       env:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
