@@ -9,7 +9,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - uses: isbang/compose-action@v1.4.0
-    with:
-      compose-file: |
-        ${{ inputs.COMPOSE_FILE }}
+  - name: Run docker-compose
+    run: docker-compose -f ${{ inputs.COMPOSE_FILE }} up -d
+    shell: bash
