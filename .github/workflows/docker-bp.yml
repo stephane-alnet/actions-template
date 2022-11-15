@@ -50,6 +50,7 @@ on:
       GH_BOT_DEPLOY_KEY:
         required: false
 
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
@@ -58,7 +59,7 @@ jobs:
     name: BUILD
 
     outputs:
-      imagetag: ${{ steps.meta.outputs.tags }}
+      IMAGE_TAG: ${{ steps.build.outputs.IMAGE_TAG }}
     steps:
     - uses: actions/checkout@v3
       with:

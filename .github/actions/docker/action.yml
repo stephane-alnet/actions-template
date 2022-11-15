@@ -17,7 +17,7 @@ inputs:
     required: false
     default: linux/amd64
 outputs:
-  imagetag:
+  IMAGE_TAG:
     description: "Export image tag"
     value: ${{ steps.meta.outputs.tags }}
     

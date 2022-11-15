@@ -134,3 +134,4 @@ jobs:
     secrets:
       PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
       ENDPOINT_ID: ${{ secrets.ENDPOINT_ID }}
+      IMAGE_TAG: ${{ needs.BUILD.outputs.IMAGE_TAG }}
