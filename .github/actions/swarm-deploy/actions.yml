@@ -9,7 +9,6 @@ runs:
   using: "composite"
   steps:
     name: "Deploy to a Swarm cluster"
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy to Swarm
         run: |
