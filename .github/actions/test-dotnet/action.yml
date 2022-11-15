@@ -12,7 +12,7 @@ runs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ inputs.DOTNET-VERSION }}
+        dotnet-version: ${{ inputs.DOTNET_VERSION }}
 
     - name: Build
       run: dotnet build --configuration Release
