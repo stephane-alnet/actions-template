@@ -32,7 +32,7 @@ on:
       DEPENDENCIES_FILE:
         required: false
         type: string
-        default: ./profisioning/docker-compose.yml
+        default: ./provisioning/docker-compose.yml
       DOTNET_VERSION:
         required: false
         type: string
