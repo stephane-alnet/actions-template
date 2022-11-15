@@ -44,6 +44,10 @@ on:
         required: false
       SONAR_PROJECT_KEY:
         required: false
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -64,15 +68,15 @@ jobs:
         repository: signalwire/actions-template
         ref: dotnet
         path: actions
-    
-    - name: list file
-      run: ls -l
 
     - name: Up Test dependencies
       if: ${{ inputs.TEST_DEPENDENCIES == true}}
       uses: ./actions/.github/actions/docker-compose
       with:
         COMPOSE_FILE: ${{ inputs.DEPENDENCIES_FILE }}
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Test .NET
       if: ${{ inputs.LANGUAGE == 'dot-net' }}

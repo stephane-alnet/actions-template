@@ -9,6 +9,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+  - name: Login to DockerHub
+    uses: docker/login-action@v2
+    with:
+      username: ${{ env.DOCKERHUB_USERNAME }}
+      password: ${{ env.DOCKERHUB_TOKEN }}
+      
   - uses: KengoTODA/actions-setup-docker-compose@main
     with:
       version: '2.12.1'
