@@ -62,7 +62,7 @@ jobs:
         NODE_VERSION: ${{ inputs.NODE_VERSION }}
     
     - name: Test Ruby
-      if: ${{ inputs.LANGUAGE == 'JavaScript' }}
+      if: ${{ inputs.LANGUAGE == 'Ruby' }}
       uses: ./actions/.github/actions/test-ruby
       with:
         RUBY_VERSION: ${{ inputs.RUBY_VERSION }}

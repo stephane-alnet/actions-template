@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI checking
+name: Docker Build, Scan & Push
 
 # Controls when the workflow will run
 on:
@@ -110,5 +110,3 @@ jobs:
         IMAGE: ${{ steps.build.outputs.imagetag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
-
-
