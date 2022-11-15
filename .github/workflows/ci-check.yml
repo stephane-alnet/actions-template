@@ -64,6 +64,9 @@ jobs:
         repository: signalwire/actions-template
         ref: dotnet
         path: actions
+    
+    - name: list file
+      run: ls -l
 
     - name: Up Test dependencies
       if: ${{ inputs.TEST_DEPENDENCIES == true}}
