@@ -14,7 +14,7 @@ on:
         required: false
         type: string
     secrets:
-      ENDPOINTID:
+      ENDPOINT_ID:
         required: false
       PORTAINER_API_KEY:
         required: false
@@ -48,7 +48,7 @@ jobs:
       name: Deploy to a Swarm Cluster
       env:
         PORTAINER_API_KEY: ${{ secrets.PORTAINER_API_KEY }}
-        ENDPOINTID: ${{ secrets.ENDPOINTID }}
+        ENDPOINT_ID: ${{ secrets.ENDPOINT_ID }}
       with:
         STACK_NAME: ${{ inputs.STACK_NAME }}
 
