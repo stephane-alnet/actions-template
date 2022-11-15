@@ -105,6 +105,7 @@ jobs:
     
     - uses: ./actions/.github/actions/trivy
       name: Trivy Scan
+      if: github.event_name == 'pull_request'
       with:
         IMAGE: ${{ steps.build.outputs.imagetag }}
       env:
