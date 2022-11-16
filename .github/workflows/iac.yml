@@ -69,9 +69,6 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WIP }}
           service_account: ${{ secrets.GCP_SA }}
       
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
-
       - name: run terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
@@ -86,10 +83,6 @@ jobs:
         id: validate
         run: terragrunt run-all validate
         working-directory: ${{ inputs.WORKING_DIR }}
-
-      - name: Terragrunt fmt
-        id: fmt
-        run: terragrunt run-all hclfmt
 
       - name: Terragrunt plan
         id: plan
