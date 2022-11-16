@@ -14,6 +14,10 @@ runs:
       with:
         dotnet-version: ${{ inputs.DOTNET_VERSION }}
 
+    - name: test docker-compose
+      run: docker ps
+      shell: bash
+      
     - name: Build
       run: dotnet build --configuration Release
       shell: bash
