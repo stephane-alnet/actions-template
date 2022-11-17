@@ -89,11 +89,11 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Test .NET
-      if: ${{ inputs.LANGUAGE == 'dot-net' }}
-      uses: ./actions/.github/actions/test-dotnet
-      with:
-        DOTNET_VERSION: ${{ inputs.DOTNET_VERSION }}
+    # - name: Test .NET
+    #   if: ${{ inputs.LANGUAGE == 'dot-net' }}
+    #   uses: ./actions/.github/actions/test-dotnet
+    #   with:
+    #     DOTNET_VERSION: ${{ inputs.DOTNET_VERSION }}
     
     - name: Test JS
       if: ${{ inputs.LANGUAGE == 'JavaScript' }}
