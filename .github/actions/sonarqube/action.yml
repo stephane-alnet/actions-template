@@ -47,7 +47,7 @@ runs:
       run: |
         ~/.sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="http://172.16.16.148:9000" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
         ~/.sonar/trx2junit/trx2junit Tests/TestResults/test-results.trx --output .
-        ~/.sonar/coverage/dotnet-coverage collect -f xml -o 'test-results.xml'
+        ~/.sonar/coverage/dotnet-coverage collect test -f xml -o 'test-results.xml'
         ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ env.SONAR_TOKEN }}"
 
     - name: SonarQube Scan
