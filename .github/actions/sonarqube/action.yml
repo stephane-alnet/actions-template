@@ -22,16 +22,12 @@ runs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
 
-    - name: Cache SonarQube packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-
     - name: Install .NET requirements
       if: ${{ inputs.LANGUAGE == 'dot-net'}}
-      run: dotnet tool install --global dotnet-coverage
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet tool install --global dotnet-coverage
+        dotnet tool install --global trx2junit
       shell: bash
 
     - name: Install SonarQube scanner for .NET
@@ -41,7 +37,7 @@ runs:
         mkdir -p ~/.sonar/scanner 
         dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
         dotnet tool update dotnet-coverage --tool-path ~/.sonar/coverage
-        dotnet tool install -g trx2junit --tool-path ~/.sonar/trx2junit
+        dotnet tool update trx2junit --tool-path ~/.sonar/trx2junit
 
     - name: Build and analyze .NET
       env:
