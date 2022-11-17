@@ -94,7 +94,7 @@ on:
 jobs:
   CHECK:
     name: CI
-    uses: signalwire/actions-template/.github/workflows/ci-check.yml@dotnet
+    uses: signalwire/actions-template/.github/workflows/ci-check.yml@main
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       LANGUAGE: ${{ inputs.LANGUAGE }}
