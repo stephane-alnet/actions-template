@@ -38,7 +38,7 @@ runs:
         dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
         dotnet tool update dotnet-coverage --tool-path ~/.sonar/coverage
         dotnet tool update trx2junit --tool-path ~/.sonar/trx2junit
-        sudo apt-get update && apt-get install -y libxrender1 libfontconfig libxext6 libc6 libxml2
+        sudo apt-get update && sudo apt-get install -y libxrender1 libfontconfig libxext6 libc6 libxml2
 
     - name: Build and analyze .NET
       env:
