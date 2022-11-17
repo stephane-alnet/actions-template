@@ -24,30 +24,25 @@ runs:
 
     - name: Install .NET requirements
       if: ${{ inputs.LANGUAGE == 'dot-net'}}
-      run: |
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet tool install --global dotnet-coverage
-        dotnet tool install --global trx2junit
+      run: dotnet tool install --global dotnet-coverage
       shell: bash
 
-    - name: Install SonarQube scanner and its dependencies for .NET
+    - name: Install SonarQube scanner for .NET
       if: ${{ inputs.LANGUAGE == 'dot-net'}}
       shell: bash
       run: |
         mkdir -p ~/.sonar/scanner 
         dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
         dotnet tool update dotnet-coverage --tool-path ~/.sonar/coverage
-        dotnet tool update trx2junit --tool-path ~/.sonar/trx2junit
-        sudo apt-get update && sudo apt-get install -y glibc-source libxrender1 libfontconfig libxext6 libc6 libxml2
 
     - name: Build and analyze .NET
       env:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}  # Needed to get PR information, if any
       shell: bash
       run: |
-        ~/.sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="http://172.16.16.148:9000" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-        ~/.sonar/trx2junit/trx2junit Tests/TestResults/test-results.trx --output .
-        ~/.sonar/coverage/dotnet-coverage collect test -f xml -o 'test-results.xml'
+        ~/.sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="http://sonar.signalwire.private:9000" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+        dotnet build --no-incremental
+        dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
         ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ env.SONAR_TOKEN }}"
 
     - name: SonarQube Scan
