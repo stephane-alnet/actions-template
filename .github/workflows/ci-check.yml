@@ -62,37 +62,6 @@ jobs:
     # The type of runner that the job will run on
     runs-on: [ self-hosted ]
     name: CI_CHECK
-    services: 
-      event-redis:
-        image: redis:4-alpine
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      zookeeper:
-        image: confluentinc/cp-zookeeper:6.1.0
-        env:
-          ZOOKEEPER_CLIENT_PORT: 2181
-          KAFKA_OPTS: -Dzookeeper.4lw.commands.whitelist=mntr
-        options: >-
-          --health-cmd "echo mntr | nc -w 2 localhost 2181"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      kafka:
-        image: confluentinc/cp-kafka:6.1.0
-        options: >-
-          --health-cmd "nc -z localhost 9092"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        env:
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://:9092
-          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-          KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
-      
     steps:
     - uses: actions/checkout@v3
       with:
