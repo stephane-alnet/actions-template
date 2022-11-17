@@ -41,6 +41,7 @@ runs:
         mkdir -p ~/.sonar/scanner 
         dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
         dotnet tool update dotnet-coverage --tool-path ~/.sonar/coverage
+        dotnet tool install -g trx2junit --tool-path ~/.sonar/trx2junit
 
     - name: Build and analyze .NET
       env:
@@ -48,8 +49,8 @@ runs:
       shell: bash
       run: |
         ~/.sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="http://172.16.16.148:9000" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-        dotnet build --no-incremental
-        ~/.sonar/coverage/dotnet-coverage collect 'dotnet test -p:DefineConstants=TESTING' -f xml  -o 'coverage.xml'
+        ~/.sonar/trx2junit/trx2junit Tests/TestResults/test-results.trx --output .
+        ~/.sonar/coverage/dotnet-coverage collect -f xml -o 'test-results.xml'
         ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ env.SONAR_TOKEN }}"
 
     - name: SonarQube Scan
