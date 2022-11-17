@@ -30,7 +30,7 @@ runs:
         dotnet tool install --global trx2junit
       shell: bash
 
-    - name: Install SonarQube scanner for .NET
+    - name: Install SonarQube scanner and its dependencies for .NET
       if: ${{ inputs.LANGUAGE == 'dot-net'}}
       shell: bash
       run: |
@@ -38,6 +38,7 @@ runs:
         dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
         dotnet tool update dotnet-coverage --tool-path ~/.sonar/coverage
         dotnet tool update trx2junit --tool-path ~/.sonar/trx2junit
+        apt-get update && apt-get install -y libxrender1 libfontconfig libxext6 libc6 libxml2
 
     - name: Build and analyze .NET
       env:
