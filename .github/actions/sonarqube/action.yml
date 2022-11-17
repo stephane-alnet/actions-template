@@ -9,14 +9,14 @@ runs:
   using: "composite"
   steps:
     - name: Set up JDK 11
-      if: ${{ inputs.LANGUAGE == "dot-net"}}
+      if: ${{ inputs.LANGUAGE == 'dot-net'}}
       uses: actions/setup-java@v1
       with:
         java-version: 1.11
 
     - name: Cache SonarQube packages
       uses: actions/cache@v1
-      if: ${{ inputs.LANGUAGE == "dot-net"}}
+      if: ${{ inputs.LANGUAGE == 'dot-net'}}
       with:
         path: ~/.sonar/cache
         key: ${{ runner.os }}-sonar
@@ -30,12 +30,12 @@ runs:
         restore-keys: ${{ runner.os }}-sonar
 
     - name: Install .NET requirements
-      if: ${{ inputs.LANGUAGE == "dot-net"}}
+      if: ${{ inputs.LANGUAGE == 'dot-net'}}
       run: dotnet tool install --global dotnet-coverage
       shell: bash
 
     - name: Install SonarQube scanner for .NET
-      if: ${{ inputs.LANGUAGE == "dot-net"}}
+      if: ${{ inputs.LANGUAGE == 'dot-net'}}
       shell: bash
       run: |
         mkdir -p ~/.sonar/scanner 
@@ -54,7 +54,7 @@ runs:
 
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
-      if: ${{ inputs.LANGUAGE != "dot-net"}}
+      if: ${{ inputs.LANGUAGE != 'dot-net'}}
       env:
         SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
