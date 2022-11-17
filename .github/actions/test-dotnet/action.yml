@@ -23,7 +23,7 @@ runs:
       shell: bash
 
     - name: Test
-      run: dotnet test --logger "trx;LogFileName=test-results.trx" || true
+      run: dotnet test --logger "trx;LogFileName=test-results.trx" -p:DefineConstants=TESTING || true
       shell: bash
 
     - name: Test Report
