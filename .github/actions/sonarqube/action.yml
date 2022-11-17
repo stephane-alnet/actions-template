@@ -40,7 +40,7 @@ runs:
         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}  # Needed to get PR information, if any
       shell: bash
       run: |
-        ~/.sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="http://sonar.signalwire.private:9000" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+        ~/.sonar/scanner/dotnet-sonarscanner begin /k:"${{ env.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="http://172.16.16.148:9000" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
         dotnet build --no-incremental
         dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
         ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ env.SONAR_TOKEN }}"
