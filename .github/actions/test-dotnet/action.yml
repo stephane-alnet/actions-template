@@ -1,0 +1,36 @@
+name: .NET Unit Test
+description: .NET Test report
+
+inputs:
+  DOTNET_VERSION:
+    required: false
+    default: "6.0.403"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ inputs.DOTNET_VERSION }}
+
+    - name: test docker-compose
+      run: docker ps
+      shell: bash
+      
+    - name: Build
+      run: dotnet build --configuration Release
+      shell: bash
+
+    - name: Test
+      run: dotnet test --logger "trx;LogFileName=test-results.trx" -p:DefineConstants=TESTING || true
+      shell: bash
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: DotNET Tests
+        path: "**/test-results.trx"                            
+        reporter: dotnet-trx
+        fail-on-error: false #TODO: fix me

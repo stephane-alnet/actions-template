@@ -1,0 +1,122 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI checking
+
+# Controls when the workflow will run
+on:
+
+  workflow_call:
+    inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
+      LANGUAGE:
+        required: true
+        type: string
+      NODE_VERSION:
+        required: false
+        default: "19"
+        type: string
+      COVERAGE:
+        required: false
+        type: boolean
+        default: true
+      RUBY_VERSION:
+        required: false
+        type: string
+        default: "2.7.4"
+      TEST_DEPENDENCIES:
+        required: false
+        type: boolean
+        default: false
+      DEPENDENCIES_FILE:
+        required: false
+        type: string
+        default: ./provisioning/docker-compose.yml
+      DOTNET_VERSION:
+        required: false
+        type: string
+        default: "6.0.403"
+      SUBMODULES_RECURSIVE:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      SONAR_HOST_URL:
+        required: false
+      SONAR_TOKEN: 
+        required: false
+      SONAR_PROJECT_KEY:
+        required: false
+      DOCKERHUB_USERNAME:
+        required: false
+      DOCKERHUB_TOKEN:
+        required: false
+      GH_BOT_DEPLOY_KEY:
+        required: false
+      
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "deploy"
+  ci:
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted ]
+    name: CI_CHECK
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/checkout@v3
+      if: ${{ inputs.SUBMODULES_RECURSIVE  == true }}
+      with:
+        ssh-key: ${{ env.GH_BOT_DEPLOY_KEY }}
+        submodules: 'recursive'
+
+    - name: Checkout actions
+      uses: actions/checkout@v3
+      with:
+        repository: signalwire/actions-template
+        ref: main
+        path: actions
+
+    - name: Up Test dependencies
+      if: ${{ inputs.TEST_DEPENDENCIES == true}}
+      uses: ./actions/.github/actions/docker-compose
+      with:
+        COMPOSE_FILE: ${{ inputs.DEPENDENCIES_FILE }}
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Test .NET
+      if: ${{ inputs.LANGUAGE == 'dot-net' }}
+      uses: ./actions/.github/actions/test-dotnet
+      with:
+        DOTNET_VERSION: ${{ inputs.DOTNET_VERSION }}
+    
+    - name: Test JS
+      if: ${{ inputs.LANGUAGE == 'JavaScript' }}
+      uses: ./actions/.github/actions/test-javascript
+      with:
+        NODE_VERSION: ${{ inputs.NODE_VERSION }}
+    
+    - name: Test Ruby
+      if: ${{ inputs.LANGUAGE == 'Ruby' }}
+      uses: ./actions/.github/actions/test-ruby
+      with:
+        RUBY_VERSION: ${{ inputs.RUBY_VERSION }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: SonarQube Coverage
+      if: ${{ inputs.COVERAGE == true }}
+      uses: ./actions/.github/actions/sonarqube
+      with:
+        LANGUAGE: ${{ inputs.LANGUAGE }}
+      env:
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+
