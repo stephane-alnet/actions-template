@@ -41,7 +41,13 @@ on:
       TAG:
         required: false
         type: string
-        default: 'type=sha'
+        default: |
+          type=schedule
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
       BUILD_ARGS:
         required: false
         default: ''
@@ -102,6 +108,7 @@ jobs:
         FILE: ${{ inputs.FILE }}
         CONTEXT: ${{ inputs.CONTEXT }}
         PLATFORMS: ${{ inputs.PLATFORMS }}
+        TAG: ${{ inputs.TAG }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
