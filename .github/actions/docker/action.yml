@@ -18,13 +18,7 @@ inputs:
     default: linux/amd64
   TAG:
     required: false
-    default: |
-      type=schedule
-      type=ref,event=pr
-      type=semver,pattern={{version}}
-      type=semver,pattern={{major}}.{{minor}}
-      type=semver,pattern={{major}}
-      type=sha
+    default: 'type=sha'
   BUILD_ARGS:
     required: false
     default: ''
