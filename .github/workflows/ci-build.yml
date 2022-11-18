@@ -39,7 +39,7 @@ on:
         type: boolean
         default: false
       TAG:
-        required: false
+        required: true
         type: string
         default: |
           type=schedule
