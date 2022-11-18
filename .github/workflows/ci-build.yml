@@ -50,6 +50,7 @@ on:
           type=sha
       BUILD_ARGS:
         required: false
+        type: string
         default: ''
     secrets:
       DOCKERHUB_USERNAME:
