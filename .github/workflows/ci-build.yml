@@ -38,6 +38,20 @@ on:
         required: false
         type: boolean
         default: false
+      TAG:
+        required: false
+        type: string
+        default: |
+          type=schedule
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
+      BUILD_ARGS:
+        required: false
+        type: string
+        default: ''
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -68,7 +82,7 @@ jobs:
     - uses: actions/checkout@v3
       if: ${{ inputs.SUBMODULES_RECURSIVE  == true }}
       with:
-        ssh-key: ${{ env.GH_BOT_DEPLOY_KEY }}
+        ssh-key: ${{ secrets.GH_BOT_DEPLOY_KEY }}
         submodules: 'recursive'
 
     - name: Checkout actions
@@ -95,10 +109,12 @@ jobs:
         FILE: ${{ inputs.FILE }}
         CONTEXT: ${{ inputs.CONTEXT }}
         PLATFORMS: ${{ inputs.PLATFORMS }}
+        TAG: ${{ inputs.TAG }}
+        BUILD_ARGS: ${{ inputs.BUILD_ARGS }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
-        DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN }}
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - uses: ./actions/.github/actions/trivy
       name: Trivy Scan
