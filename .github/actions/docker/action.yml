@@ -25,6 +25,9 @@ inputs:
       type=semver,pattern={{major}}.{{minor}}
       type=semver,pattern={{major}}
       type=sha
+  BUILD_ARGS:
+    required: false
+    default: ''
 outputs:
   IMAGE_TAG:
     description: "Export image tag"
@@ -69,6 +72,7 @@ runs:
         file: ${{ inputs.FILE }}
         context: ${{ inputs.CONTEXT }}
         platforms: ${{ inputs.PLATFORMS }}
+        build-args: ${{ inputs.BUILD_ARGS }}
 
     - name: Test
       if: github.event_name == 'pull_request'
@@ -95,3 +99,4 @@ runs:
         file: ${{ inputs.FILE }}
         context: ${{ inputs.CONTEXT }}
         platforms: ${{ inputs.PLATFORMS }}
+        build-args: ${{ inputs.BUILD_ARGS }}

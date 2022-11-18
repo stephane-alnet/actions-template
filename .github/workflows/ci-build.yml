@@ -48,6 +48,9 @@ on:
           type=semver,pattern={{major}}.{{minor}}
           type=semver,pattern={{major}}
           type=sha
+      BUILD_ARGS:
+        required: false
+        default: ''
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -109,6 +112,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        BUILD_ARGS: ${{ inputs.BUILD_ARGS }}
     
     - uses: ./actions/.github/actions/trivy
       name: Trivy Scan
