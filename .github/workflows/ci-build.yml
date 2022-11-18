@@ -41,7 +41,7 @@ on:
       TAG:
         required: false
         type: string
-        default: 'type=sha'
+        default: ''
       BUILD_ARGS:
         required: false
         default: ''
