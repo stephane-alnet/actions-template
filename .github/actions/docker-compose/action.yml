@@ -1,0 +1,28 @@
+name: Run Docker compose file
+description: Buld and push image to SignalWire registry
+
+inputs:
+  COMPOSE_FILE:
+    required: false
+    default: provisioning/docker-compose.yml
+    
+runs:
+  using: "composite"
+  steps:
+  - name: Login to DockerHub
+    uses: docker/login-action@v2
+    with:
+      username: ${{ env.DOCKERHUB_USERNAME }}
+      password: ${{ env.DOCKERHUB_TOKEN }}
+
+  - uses: KengoTODA/actions-setup-docker-compose@main
+    with:
+      version: '2.12.1'
+
+  - name: Create default network  
+    run: docker network create signalwire_freeswitch
+    shell: bash
+
+  - name: Run docker-compose
+    run: docker-compose -f ${{ inputs.COMPOSE_FILE }} up -d
+    shell: bash

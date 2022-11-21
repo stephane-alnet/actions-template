@@ -6,7 +6,7 @@ inputs:
     required: true
   PUSH:
     required: false
-    default: "no"
+    default: false
   FILE:
     required: false
     default: ./Dockerfile
@@ -16,6 +16,18 @@ inputs:
   PLATFORMS:
     required: false
     default: linux/amd64
+  TAG:
+    required: false
+    default: |
+      type=schedule
+      type=ref,event=pr
+      type=semver,pattern={{version}}
+      type=semver,pattern={{major}}.{{minor}}
+      type=semver,pattern={{major}}
+      type=sha
+  BUILD_ARGS:
+    required: false
+    default: ''
 outputs:
   IMAGE_TAG:
     description: "Export image tag"
@@ -38,12 +50,7 @@ runs:
           signalwire/${{ inputs.PROJECT_NAME }}
         # generate Docker tags based on the following events/attributes
         tags: |
-          type=schedule
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-          type=sha
+          ${{ inputs.TAG }}
     
     - name: Login to DockerHub
       uses: docker/login-action@v2
@@ -58,12 +65,14 @@ runs:
       uses: docker/build-push-action@v3
       with:
         load: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: |
+          ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         file: ${{ inputs.FILE }}
         context: ${{ inputs.CONTEXT }}
         platforms: ${{ inputs.PLATFORMS }}
+        build-args: ${{ inputs.BUILD_ARGS }}
 
     - name: Test
       if: github.event_name == 'pull_request'
@@ -80,13 +89,15 @@ runs:
         echo "::set-output name=container-logs::$EXECUTIONLOG"
     
     - name: Build and push
-      if: ${{ inputs.PUSH }} == 'yes'
+      if: ${{ inputs.PUSH == true }}
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: |
+          ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         file: ${{ inputs.FILE }}
         context: ${{ inputs.CONTEXT }}
         platforms: ${{ inputs.PLATFORMS }}
+        build-args: ${{ inputs.BUILD_ARGS }}
