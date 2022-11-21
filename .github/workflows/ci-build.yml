@@ -54,7 +54,7 @@ on:
         default: ''
       SUBMODULES_PRIVATE: 
         required: false
-        type: string
+        type: boolean
         default: true
     secrets:
       DOCKERHUB_USERNAME:
