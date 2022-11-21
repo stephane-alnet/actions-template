@@ -6,7 +6,7 @@ inputs:
     required: true
   PUSH:
     required: false
-    default: false
+    default: 'false'
   FILE:
     required: false
     default: ./Dockerfile
@@ -89,7 +89,7 @@ runs:
         echo "::set-output name=container-logs::$EXECUTIONLOG"
     
     - name: Build and push
-      if: ${{ inputs.PUSH == true }}
+      if: ${{ inputs.PUSH == 'true' }}
       uses: docker/build-push-action@v3
       with:
         push: true
