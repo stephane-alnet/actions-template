@@ -52,6 +52,10 @@ on:
         required: false
         type: string
         default: ''
+      SUBMODULES_PRIVATE: 
+        required: false
+        type: string
+        default: true
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -80,13 +84,13 @@ jobs:
         fetch-depth: 0
 
     - uses: actions/checkout@v3
-      if: ${{ inputs.SUBMODULES_RECURSIVE  == true }}
+      if: ${{ inputs.SUBMODULES_RECURSIVE  == true && inputs.SUBMODULES_PRIVATE == true }}
       with:
         ssh-key: ${{ secrets.GH_BOT_DEPLOY_KEY }}
         submodules: 'recursive'
 
     - uses: actions/checkout@v3
-      if: ${{ inputs.SUBMODULES_RECURSIVE  == false }}
+      if: ${{ inputs.SUBMODULES_RECURSIVE  == true && inputs.SUBMODULES_PRIVATE == false }}
       with:
         submodules: 'recursive'
 
